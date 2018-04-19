@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/yellow"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".MainActivity"
+    tools:deviceIds="wear">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dim_32"
+                android:layout_marginEnd="@dimen/dim_32"
+                android:layout_marginStart="@dimen/dim_32"
+                android:layout_marginTop="@dimen/dim_32"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/stop_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="@dimen/dim_16"
+                    android:layout_marginEnd="@dimen/dim_16"
+                    android:layout_marginStart="@dimen/dim_16"
+                    android:background="@color/green"
+                    android:text="start"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/acc_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acc-x"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/acc_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acc-y"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/acc_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acc-z"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/rot_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rot-x"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/rot_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rot-y"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/rot_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rot-z"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/count_acc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    tools:text="acc" />
+
+                <TextView
+                    android:id="@+id/count_rot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    tools:text="rot" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</android.support.wear.widget.BoxInsetLayout>
