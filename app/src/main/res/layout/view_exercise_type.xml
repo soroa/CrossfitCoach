@@ -8,6 +8,7 @@
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,22 +17,25 @@
             android:id="@+id/exercise_type_exercise_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="24sp"
             android:layout_marginTop="@dimen/dim_32"
+            android:text="@string/kb_swings"
             android:textColor="@color/black"
-            android:text="@string/exercise_1"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/exercise_type_exercise_iv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/exercise_type_exercise_tv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="@dimen/dim_16"
-            />
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_type_exercise_tv"
+            app:layout_constraintVertical_bias="0.145" />
     </android.support.constraint.ConstraintLayout>
 </android.support.wear.widget.BoxInsetLayout>
