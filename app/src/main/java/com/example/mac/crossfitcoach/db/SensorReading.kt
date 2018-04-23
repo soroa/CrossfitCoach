@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("session_id"),
         onDelete = ForeignKey.CASCADE
-))])
+))], tableName = "sensor_readings")
 data class SensorReading(
         @PrimaryKey(autoGenerate = true)
         val id: Int,
@@ -23,4 +23,4 @@ data class SensorReading(
         @ColumnInfo(name = "session_id")
         val sessionId: Int,
         @ColumnInfo(name = "sensor_position")
-        val sensorPosition: Int)
+        val sensorPosition: Int = 0)

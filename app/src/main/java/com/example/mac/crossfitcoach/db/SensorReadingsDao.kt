@@ -12,6 +12,9 @@ interface SensorReadingsDao {
     @Insert(onConflict = REPLACE)
     fun save(sensorReading: SensorReading)
 
-    @Query("SELECT * FROM sensorreading WHERE id = :sensorReadingId")
+    @Insert(onConflict = REPLACE)
+    fun saveAll(sensorReadings: List<SensorReading>)
+
+    @Query("SELECT * FROM sensor_readings WHERE id = :sensorReadingId")
     fun load(sensorReadingId: Int): LiveData<SensorReading>
 }

@@ -1,5 +1,6 @@
 package com.example.mac.crossfitcoach.record_session
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
@@ -13,31 +14,35 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_record_session.*
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.app.AlertDialog
 
 
 class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
-
-    private lateinit var model: RecordExerciseViewModel
-    private var isRecording = false
-    private var timer: Disposable? = null
 
     override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    private lateinit var model: RecordExerciseViewModel
+    private var isRecording = false
+    private var timer: Disposable? = null
+    private lateinit var mAmbientController: AmbientModeSupport.AmbientController
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
+//        mAmbientController = AmbientModeSupport.attach(this)
+
         model = ViewModelProviders.of(this).get(RecordExerciseViewModel::class.java)
         addTouchEffect()
-
         record_btn.setOnClickListener { view ->
             if (isRecording) {
                 stopTimer()
+                model.stopRecording()
                 isRecording = false
             } else {
                 startTimer()
+                model.startRecording()
                 isRecording = true
             }
         }
@@ -74,9 +79,12 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         myAlertDialog.setTitle("Do you want to save it? ")
         myAlertDialog.setPositiveButton("YES") { arg0, arg1 ->
             session_timer_tv.text = "00:00"
+            model.saveRecording()
+            //go to next
         }
         myAlertDialog.setNegativeButton("NO") { arg0, arg1 ->
             session_timer_tv.text = "00:00"
+            model.deleteRecording()
         }
         myAlertDialog.show()
     }

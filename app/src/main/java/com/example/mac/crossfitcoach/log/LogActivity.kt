@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit
 
 
 class LogActivity : WearableActivity(), SensorEventListener {
-    var accReadingsCount = 0;
-    var rotReadingsCount = 0;
+    var accReadingsCount = 0
+    var rotReadingsCount = 0
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 

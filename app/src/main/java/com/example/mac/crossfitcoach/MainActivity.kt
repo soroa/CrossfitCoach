@@ -11,14 +11,17 @@ import com.example.mac.crossfitcoach.exercise_list.ExerciseListActivity
 import com.example.mac.crossfitcoach.log.LogActivity
 import com.example.mac.crossfitcoach.record_session.RecordExerciseActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import android.arch.persistence.room.Room
+import com.example.mac.crossfitcoach.db.SensorsDatabase
+
 
 class MainActivity : WearableActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setAmbientEnabled()
+
 //        getInfoAboutSensors()
         data_collect_btn.setOnClickListener { _ ->
             val i = Intent(this, ExerciseListActivity::class.java)
@@ -33,7 +36,6 @@ class MainActivity : WearableActivity() {
             val i = Intent(this, RecordExerciseActivity::class.java)
             startActivity(i)
         }
-
     }
 
     private fun getInfoAboutSensors() {
