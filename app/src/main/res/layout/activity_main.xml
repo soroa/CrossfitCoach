@@ -30,5 +30,11 @@
             android:layout_height="wrap_content"
             android:text="Collect data" />
 
+        <Button
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test" />
+
     </LinearLayout>
 </android.support.wear.widget.BoxInsetLayout>

@@ -9,6 +9,7 @@ import android.support.wearable.activity.WearableActivity
 import android.util.Log
 import com.example.mac.crossfitcoach.exercise_list.ExerciseListActivity
 import com.example.mac.crossfitcoach.log.LogActivity
+import com.example.mac.crossfitcoach.record_session.RecordSessionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : WearableActivity() {
@@ -26,6 +27,10 @@ class MainActivity : WearableActivity() {
 
         sensor_log_btn.setOnClickListener { _ ->
             val i = Intent(this, LogActivity::class.java)
+            startActivity(i)
+        }
+        test.setOnClickListener { _ ->
+            val i = Intent(this, RecordSessionActivity::class.java)
             startActivity(i)
         }
 
