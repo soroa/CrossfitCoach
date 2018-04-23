@@ -16,9 +16,9 @@ import java.util.concurrent.TimeUnit
 import android.app.AlertDialog
 
 
-class RecordSessionActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
+class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
 
-    private lateinit var model: RecordSessionViewModel
+    private lateinit var model: RecordExerciseViewModel
     private var isRecording = false
     private var timer: Disposable? = null
 
@@ -29,7 +29,7 @@ class RecordSessionActivity : FragmentActivity(), AmbientModeSupport.AmbientCall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
-        model = ViewModelProviders.of(this).get(RecordSessionViewModel::class.java)
+        model = ViewModelProviders.of(this).get(RecordExerciseViewModel::class.java)
         addTouchEffect()
 
         record_btn.setOnClickListener { view ->
@@ -42,7 +42,6 @@ class RecordSessionActivity : FragmentActivity(), AmbientModeSupport.AmbientCall
             }
         }
     }
-
 
     private fun startTimer() {
         var startTime = 0L

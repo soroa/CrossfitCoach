@@ -97,8 +97,8 @@ class LogActivity : WearableActivity(), SensorEventListener {
                 accReadingsCount = 0
                 rotReadingsCount = 0
                 sensorsActive = true
-                sensorManager?.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL)
-                sensorManager?.registerListener(this, rotSensor, SensorManager.SENSOR_DELAY_NORMAL)
+                sensorManager?.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_FASTEST)
+                sensorManager?.registerListener(this, rotSensor, SensorManager.SENSOR_DELAY_FASTEST)
                 stopButton?.text = "Stop"
                 stopButton?.setBackgroundColor(Color.RED)
                 Observable.timer(1000, TimeUnit.MILLISECONDS)

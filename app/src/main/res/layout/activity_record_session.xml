@@ -48,6 +48,4 @@
             app:layout_constraintTop_toBottomOf="@id/record_btn" />
 
     </android.support.constraint.ConstraintLayout>
-
-
 </android.support.wear.widget.BoxInsetLayout>

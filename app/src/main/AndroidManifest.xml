@@ -35,7 +35,7 @@
 
         <activity android:name=".exercise_list.ExerciseListActivity" />
         <activity android:name=".log.LogActivity" />
-        <activity android:name=".record_session.RecordSessionActivity" />
+        <activity android:name=".record_session.RecordExerciseActivity" />
 
     </application>
 

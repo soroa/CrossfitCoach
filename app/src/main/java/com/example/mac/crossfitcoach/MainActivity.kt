@@ -9,7 +9,7 @@ import android.support.wearable.activity.WearableActivity
 import android.util.Log
 import com.example.mac.crossfitcoach.exercise_list.ExerciseListActivity
 import com.example.mac.crossfitcoach.log.LogActivity
-import com.example.mac.crossfitcoach.record_session.RecordSessionActivity
+import com.example.mac.crossfitcoach.record_session.RecordExerciseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : WearableActivity() {
@@ -30,7 +30,7 @@ class MainActivity : WearableActivity() {
             startActivity(i)
         }
         test.setOnClickListener { _ ->
-            val i = Intent(this, RecordSessionActivity::class.java)
+            val i = Intent(this, RecordExerciseActivity::class.java)
             startActivity(i)
         }
 
