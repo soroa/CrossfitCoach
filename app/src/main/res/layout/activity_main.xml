@@ -22,7 +22,7 @@
             android:id="@+id/sensor_log_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sensor Log" />
+            android:text="Delete Database" />
 
         <Button
             android:id="@+id/data_collect_btn"
