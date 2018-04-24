@@ -9,7 +9,8 @@ import java.net.Proxy;
 
 @TypeConverters({Converters.class})
 // TODO: 24.04.18 export schema
-@Database(entities = {SensorReading.class}, version=1, exportSchema = false)
+@Database(entities = {SensorReading.class, Exercise.class}, version=1, exportSchema = false)
 public abstract class SensorDatabase extends RoomDatabase {
     abstract public SensorReadingsDao sensorReadingsDao();
+    abstract public ExerciseDao exerciseDao();
 }

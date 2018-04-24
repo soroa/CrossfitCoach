@@ -1,8 +1,9 @@
 package com.example.mac.crossfitcoach.dbjava;
 
 import android.arch.persistence.room.TypeConverter;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Converters {
     @TypeConverter
@@ -20,27 +21,26 @@ public class Converters {
     }
 
     @TypeConverter
-    public String fromFloatArray(float[] values) {
+    public String fromFloatArray(List<Float> values) {
         String converted = "";
         for (float f : values) {
-            converted.concat(String.valueOf(f) + ",");
+            converted = converted.concat(String.valueOf(f) + ",");
         }
         return converted;
     }
 
     @TypeConverter
-    public float[] stringToFloat(String floatAsString) {
+    public List<Float> stringToFloat(String floatAsString) {
         if (floatAsString == null) {
-            return new float[0];
+            return new ArrayList<>();
         } else {
             String[] floatsStringArray = floatAsString.split(",");
-            float[] floats = new float[floatsStringArray.length];
-            for (int i = 0; i < floatsStringArray.length; i++) {
-                floats[i] = Float.parseFloat(floatsStringArray[i]);
+            ArrayList<Float> floats = new ArrayList<>();
+            for (String aFloatsStringArray : floatsStringArray) {
+                if(aFloatsStringArray.isEmpty()) continue;
+                floats.add(Float.parseFloat(aFloatsStringArray));
             }
             return floats;
         }
     }
-
-
 }

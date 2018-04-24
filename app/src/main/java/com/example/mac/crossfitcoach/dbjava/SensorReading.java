@@ -14,11 +14,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "sensor_readings")
 public class SensorReading {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="id")
     int id;
     @ColumnInfo(name="sensor_type")
     int sensorType;
     @ColumnInfo(name="values")
-    float[] values;
+    List<Float> values;
     @ColumnInfo(name="session_id")
     int sessionId;
     @ColumnInfo(name="exercise_id")
@@ -26,23 +27,19 @@ public class SensorReading {
     @ColumnInfo(name="timestamp")
     Date timestamp;
 
-    public SensorReading(int sensorType, float[] values, int sessionId, int exerciseId, Date timestamp) {
+    public SensorReading(int sensorType, List<Float> values, int sessionId, int exerciseId, Date timestamp) {
         this.sensorType = sensorType;
         this.values = values;
         this.sessionId = sessionId;
         this.exerciseId = exerciseId;
         this.timestamp = timestamp;
-    }
-
-    public int getId() {
-        return id;
-    }
+        }
 
     public int getSensorType() {
         return sensorType;
     }
 
-    public float[] getValues() {
+    public List<Float> getValues() {
         return values;
     }
 
