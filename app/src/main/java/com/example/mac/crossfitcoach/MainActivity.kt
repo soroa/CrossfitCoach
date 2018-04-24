@@ -11,8 +11,6 @@ import com.example.mac.crossfitcoach.exercise_list.ExerciseListActivity
 import com.example.mac.crossfitcoach.log.LogActivity
 import com.example.mac.crossfitcoach.record_session.RecordExerciseActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.arch.persistence.room.Room
-import com.example.mac.crossfitcoach.db.SensorsDatabase
 
 
 class MainActivity : WearableActivity() {

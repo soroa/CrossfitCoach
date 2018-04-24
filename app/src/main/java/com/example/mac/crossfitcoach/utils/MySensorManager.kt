@@ -6,7 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
-import com.example.mac.crossfitcoach.db.SensorReading
+import com.example.mac.crossfitcoach.dbjava.SensorReading
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -14,8 +14,8 @@ import java.util.*
 class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventListener {
 
     val sensorManager: SensorManager
-    val sensors= mutableListOf<Sensor>()
-    val sensorReadingsLocal= mutableListOf<SensorReading>()
+    val sensors = mutableListOf<Sensor>()
+    val sensorReadingsLocal = mutableListOf<SensorReading>()
 
     init {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -30,25 +30,26 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     }
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
-        sensorReadingsLocal.add(SensorReading(0,
-                sensorEvent!!.sensor.type,
-                sensorEvent.values.toTypedArray(),
-                Calendar.getInstance().getTime().toString(),
-                0))
-        Log.d("Andrea", sensorReadingsLocal.size.toString())
+        sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
+                , sensorEvent.values
+                , 0
+                , 0
+                , Calendar.getInstance().time))
     }
 
-    fun stopSensing(){
+
+     fun stopSensing() {
         sensorManager.unregisterListener(this)
     }
 
-    fun deleteCachedRecordings(){
+    fun deleteCachedRecordings() {
         sensorReadingsLocal.clear()
     }
 
-    fun getReadings(): List<SensorReading>{
+    fun getReadings(): List<SensorReading> {
         return sensorReadingsLocal
     }
+
     fun startSensing() {
         var allSensorsCompletable: Completable? = null
         for (sensor in sensors) {
