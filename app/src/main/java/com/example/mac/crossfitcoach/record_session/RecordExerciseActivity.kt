@@ -11,6 +11,7 @@ import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.utils.CustomViewModelFactory
 import com.example.mac.crossfitcoach.utils.INT_VALUE
 import com.example.mac.crossfitcoach.utils.RECORD_EXERCISE
+import com.example.mac.crossfitcoach.utils.addTouchEffect
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -40,7 +41,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
     }
 
     private fun initViews() {
-        addTouchEffect()
+        addTouchEffect(record_btn)
         record_btn.setOnClickListener { view ->
             if (isRecording) {
                 stopTimer()
@@ -77,7 +78,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
     private fun stopTimer() {
         val myAlertDialog = AlertDialog.Builder(this)
         showSaveOrDiscarDialog(myAlertDialog)
-        record_btn.setBackgroundResource(R.drawable.circle)
+        record_btn.setBackgroundResource(R.drawable.circle_red)
         timer?.dispose()
     }
 
@@ -95,16 +96,4 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         myAlertDialog.show()
     }
 
-    private fun addTouchEffect() {
-        record_btn.setOnTouchListener { view, motionEvent ->
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN ->
-                    view.alpha = 0.5f
-                MotionEvent.ACTION_UP ->
-                    view.alpha = 1f
-                else -> view.alpha = 1f
-            }
-            false
-        }
-    }
 }

@@ -1,40 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".MainActivity"
     tools:deviceIds="wear">
 
-    <LinearLayout
+    <android.support.wear.widget.WearableRecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dim_32"
-        android:layout_marginEnd="@dimen/dim_32"
-        android:layout_marginStart="@dimen/dim_32"
-        android:layout_marginTop="@dimen/dim_32"
-        android:orientation="vertical">
+        android:scrollbars="vertical" />
 
-        <Button
-            android:id="@+id/sensor_log_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Database" />
-
-        <Button
-            android:id="@+id/data_collect_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Collect data" />
-
-        <Button
-            android:id="@+id/test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="test" />
-
-    </LinearLayout>
 </android.support.wear.widget.BoxInsetLayout>

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".MainActivity"
     tools:deviceIds="wear">
 
     <android.support.constraint.ConstraintLayout
@@ -15,9 +14,9 @@
 
         <Button
             android:id="@+id/record_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_red"
             android:elevation="@dimen/dim_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +29,8 @@
             android:layout_marginBottom="@dimen/dim_24"
             android:text="Push-ups"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@id/record_btn"
             android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/record_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -40,12 +39,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dim_24"
-            android:textSize="24sp"
             android:text="00:00"
             android:textColor="@color/black"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/record_btn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/dim_16"
+            android:text="Next" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.wear.widget.BoxInsetLayout>
