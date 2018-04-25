@@ -7,6 +7,10 @@ import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
 import android.view.MotionEvent
 import com.example.mac.crossfitcoach.R
+import com.example.mac.crossfitcoach.dbjava.Exercise
+import com.example.mac.crossfitcoach.utils.CustomViewModelFactory
+import com.example.mac.crossfitcoach.utils.INT_VALUE
+import com.example.mac.crossfitcoach.utils.RECORD_EXERCISE
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -25,15 +29,17 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
     private lateinit var model: RecordExerciseViewModel
     private var isRecording = false
     private var timer: Disposable? = null
-    private lateinit var mAmbientController: AmbientModeSupport.AmbientController
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
-//        mAmbientController = AmbientModeSupport.attach(this)
+        var args = Bundle()
+        args.putInt(INT_VALUE, Exercise.BOX_JUMPS)
+        model = ViewModelProviders.of(this, CustomViewModelFactory(RECORD_EXERCISE, args, application)).get(RecordExerciseViewModel::class.java)
+        initViews()
+    }
 
-        model = ViewModelProviders.of(this).get(RecordExerciseViewModel::class.java)
+    private fun initViews() {
         addTouchEffect()
         record_btn.setOnClickListener { view ->
             if (isRecording) {

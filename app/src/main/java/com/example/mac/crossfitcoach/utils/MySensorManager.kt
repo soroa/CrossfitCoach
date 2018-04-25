@@ -5,13 +5,11 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.util.Log
+import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.dbjava.SensorReading
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventListener {
+class MySensorManager(context: Context, sensorCodes: Array<Int>, @Exercise.ExerciseCode var  exerciseCode: Int) : SensorEventListener {
 
     val sensorManager: SensorManager
     val sensors = mutableListOf<Sensor>()
@@ -20,25 +18,28 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     init {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         for (sensorCode in sensorCodes) {
-            sensors.add(sensorManager.getDefaultSensor(sensorCode))
+
+            val sensor = sensorManager.getDefaultSensor(sensorCode)
+            if (sensor != null) {
+                sensors.add(sensor)
+            }
         }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
-                , sensorEvent.values
+                , sensorEvent.values.asList()
                 , 0
-                , 0
+                , exerciseCode
                 , Calendar.getInstance().time))
     }
 
 
-     fun stopSensing() {
+    fun stopSensing() {
         sensorManager.unregisterListener(this)
     }
 
@@ -51,16 +52,8 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     }
 
     fun startSensing() {
-        var allSensorsCompletable: Completable? = null
         for (sensor in sensors) {
-            if (allSensorsCompletable == null) {
-                allSensorsCompletable = Completable.fromAction {
-                    sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
-                }.subscribeOn(Schedulers.newThread())
-            } else {
-                allSensorsCompletable.mergeWith(Completable.fromAction { sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST) })
-            }
-            allSensorsCompletable?.subscribe()
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
     }
 }
