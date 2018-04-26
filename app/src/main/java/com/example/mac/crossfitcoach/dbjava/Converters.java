@@ -1,6 +1,7 @@
 package com.example.mac.crossfitcoach.dbjava;
 
 import android.arch.persistence.room.TypeConverter;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,24 +22,23 @@ public class Converters {
     }
 
     @TypeConverter
-    public String fromFloatArray(List<Float> values) {
+    public String fromFloatArray(float[] values) {
         String converted = "";
         for (float f : values) {
-            converted = converted.concat(String.valueOf(f) + ",");
-        }
-        return converted;
+                converted = converted.concat(String.valueOf(f) + " ");
+            }
+        return converted.substring(0, converted.length()-1);
     }
 
     @TypeConverter
-    public List<Float> stringToFloat(String floatAsString) {
+    public float[] stringToFloat(String floatAsString) {
         if (floatAsString == null) {
-            return new ArrayList<>();
+            return new float[0];
         } else {
-            String[] floatsStringArray = floatAsString.split(",");
-            ArrayList<Float> floats = new ArrayList<>();
-            for (String aFloatsStringArray : floatsStringArray) {
-                if(aFloatsStringArray.isEmpty()) continue;
-                floats.add(Float.parseFloat(aFloatsStringArray));
+            String[] floatsStringArray = floatAsString.split(" ");
+            float[] floats = new float[floatAsString.length()];
+            for (int i=0; i<floatAsString.length(); i++) {
+                floats[i] = (Float.parseFloat(floatsStringArray[i]));
             }
             return floats;
         }

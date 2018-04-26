@@ -23,16 +23,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/delete_recording_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_garbage"
+            android:backgroundTint="@color/red"
+            android:elevation="@dimen/dim_16"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/record_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/save_recording_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_tick"
+            android:backgroundTint="@color/green"
+            android:elevation="@dimen/dim_16"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/record_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/progress_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/current_exercise_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_24"
-            android:text="Push-ups"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/record_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Push-ups" />
 
         <TextView
             android:id="@+id/session_timer_tv"
@@ -47,14 +87,17 @@
             app:layout_constraintTop_toBottomOf="@id/record_btn" />
 
         <TextView
+            android:id="@+id/next_exercise_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dim_16"
+            android:text="Next"
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/dim_16"
-            android:text="Next" />
+            tools:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.wear.widget.BoxInsetLayout>

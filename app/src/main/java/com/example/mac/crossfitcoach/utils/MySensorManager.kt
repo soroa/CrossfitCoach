@@ -5,20 +5,18 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.dbjava.SensorReading
+import com.example.mac.crossfitcoach.record_session.WorkoutStep
 import java.util.*
 
-class MySensorManager(context: Context, sensorCodes: Array<Int>, @Exercise.ExerciseCode var  exerciseCode: Int) : SensorEventListener {
+class MySensorManager(context: Context, sensorCodes: Array<Int>, private val workoutStep:WorkoutStep) : SensorEventListener {
 
-    val sensorManager: SensorManager
-    val sensors = mutableListOf<Sensor>()
-    val sensorReadingsLocal = mutableListOf<SensorReading>()
+    val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private val sensors = mutableListOf<Sensor>()
+    private val sensorReadingsLocal = mutableListOf<SensorReading>()
 
     init {
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         for (sensorCode in sensorCodes) {
-
             val sensor = sensorManager.getDefaultSensor(sensorCode)
             if (sensor != null) {
                 sensors.add(sensor)
@@ -31,13 +29,12 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>, @Exercise.Exerc
     }
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
+
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
-                , sensorEvent.values.asList()
+                , sensorEvent.values.copyOf()
                 , 0
-                , exerciseCode
                 , Calendar.getInstance().time))
     }
-
 
     fun stopSensing() {
         sensorManager.unregisterListener(this)

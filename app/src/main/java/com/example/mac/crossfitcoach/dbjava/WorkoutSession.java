@@ -4,12 +4,19 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity
+import java.util.Date;
+
+@Entity(tableName = "workout_sessions")
 public class WorkoutSession {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     int id;
     @ColumnInfo(name="start_time")
-    String startTime;
+    Date startTime;
     @ColumnInfo(name="end_time")
     String endTime;
+
+    public WorkoutSession(Date startTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }

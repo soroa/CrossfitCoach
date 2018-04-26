@@ -14,7 +14,7 @@ class CustomViewModelFactory(private val model: String, val args: Bundle, val ap
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when (model) {
-            RECORD_EXERCISE -> return RecordExerciseViewModel(app, args) as T
+            RECORD_EXERCISE -> return RecordExerciseViewModel(app) as T
             else ->
                 throw Exception("bla")
         }

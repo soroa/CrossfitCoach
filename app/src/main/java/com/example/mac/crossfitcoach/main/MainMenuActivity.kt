@@ -30,6 +30,8 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                         SensorDatabase::class.java, "sensor_readings").build()
                 Completable.fromAction {
                     db.sensorReadingsDao().nukeTable()
+                    db.exerciseDao().nukeTable()
+                    db.workoutDao().nukeTable()
                 }.subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread()).subscribe(
                                 {
@@ -50,13 +52,13 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Enables Always-on
+
         emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb))
         setAmbientEnabled()
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
-
         recycler_view.isEdgeItemsCenteringEnabled = true
         recycler_view.layoutManager = WearableLinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
