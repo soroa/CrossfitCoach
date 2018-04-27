@@ -75,6 +75,18 @@
             tools:text="Push-ups" />
 
         <TextView
+            android:id="@+id/reps_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/current_exercise_name_tv"
+            android:textColor="@color/black"
+            android:text="5 reps"
+            />
+
+        <TextView
             android:id="@+id/session_timer_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,19 +97,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/record_btn" />
-
-        <TextView
-            android:id="@+id/next_exercise_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dim_16"
-            android:text="Next"
-            android:textColor="@color/black"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.wear.widget.BoxInsetLayout>

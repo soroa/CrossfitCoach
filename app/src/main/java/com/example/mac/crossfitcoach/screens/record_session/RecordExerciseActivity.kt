@@ -44,7 +44,9 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
 
     private fun initViews() {
         addTouchEffect(record_btn)
-        current_exercise_name_tv.text = codeToNameExerciseMap.get(model.getCurrentWorkoutStep().exerciseCode)
+        val exCode = model.getCurrentWorkoutStep().exerciseCode
+        current_exercise_name_tv.text = codeToNameExerciseMap.get(exCode)
+        reps_tv.text = codeToRepsMap.get(exCode).toString() + " reps"
         record_btn.setOnClickListener { view ->
             if (isRecording) {
                 stopTimer()
@@ -75,6 +77,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
                             session_timer_tv.text = "00:00"
                         } else {
                             val i = Intent(this, WorkoutDoneActivity::class.java)
+                            finish()
                             startActivity(i)
                         }
                     },
@@ -130,7 +133,6 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         myAlertDialog.setPositiveButton("YES") { arg0, arg1 ->
             session_timer_tv.text = "00:00"
             model.saveRecording()
-            next_exercise_btn.visibility = View.VISIBLE
             //go to next
         }
         myAlertDialog.setNegativeButton("NO") { arg0, arg1 ->

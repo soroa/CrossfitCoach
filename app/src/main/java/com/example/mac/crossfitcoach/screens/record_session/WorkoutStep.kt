@@ -13,3 +13,14 @@ val codeToNameExerciseMap = mapOf(Exercise.DEAD_LIFT to "Dead Lift",
         Exercise.KETTLE_BELL_SWINGS to "Kettle B swings",
         Exercise.DEAD_LIFT to "Dead lifts",
         Exercise.THRUSTERS to "Thrusters")
+
+val codeToRepsMap = mapOf(Exercise.DEAD_LIFT to 5,
+        Exercise.PUSH_UPS to 5,
+        Exercise.PULL_UPS to 5,
+        Exercise.BURPEES to 5,
+        Exercise.SQUATS to 5,
+        Exercise.BOX_JUMPS to 5,
+        Exercise.KETTLE_BELL_SWINGS to 5,
+        Exercise.DEAD_LIFT to 5,
+        Exercise.THRUSTERS to 5)
+
