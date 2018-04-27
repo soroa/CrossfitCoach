@@ -1,4 +1,4 @@
-package com.example.mac.crossfitcoach.record_session
+package com.example.mac.crossfitcoach.screens.record_session
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel

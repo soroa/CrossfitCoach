@@ -1,4 +1,4 @@
-package com.example.mac.crossfitcoach.exercise_list
+package com.example.mac.crossfitcoach.screens.exercise_list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,7 +11,6 @@ class ExerciseListActivity: WearableActivity() {
     private lateinit var customAdapter: CustomRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise_list)
         // Enables Always-on

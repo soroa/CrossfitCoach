@@ -1,4 +1,4 @@
-package com.example.mac.crossfitcoach.main
+package com.example.mac.crossfitcoach.screens.main
 
 import android.arch.persistence.room.Room
 import android.content.Intent
@@ -8,7 +8,9 @@ import android.support.wearable.activity.WearableActivity
 import android.widget.Toast
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
-import com.example.mac.crossfitcoach.record_session.RecordExerciseActivity
+import com.example.mac.crossfitcoach.screens.exercise_list.ExerciseListActivity
+import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
+import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -22,6 +24,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onItemListClicked(index: Int) {
         when (index) {
             0 -> {
+//                val i = Intent(this, RecordExerciseActivity::class.java)
                 val i = Intent(this, RecordExerciseActivity::class.java)
                 startActivity(i)
             }
@@ -48,7 +51,6 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     private lateinit var stringAdapter: StringRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Enables Always-on

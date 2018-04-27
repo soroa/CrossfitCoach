@@ -1,14 +1,15 @@
-package com.example.mac.crossfitcoach.record_session
+package com.example.mac.crossfitcoach.screens.record_session
 
 import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
-import android.util.Log
 import android.view.View
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.Exercise
+import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.CustomViewModelFactory
 import com.example.mac.crossfitcoach.utils.INT_VALUE
 import com.example.mac.crossfitcoach.utils.RECORD_EXERCISE
@@ -73,7 +74,8 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
                             progress_spinner.visibility=View.GONE
                             session_timer_tv.text = "00:00"
                         } else {
-                            //workout done
+                            val i = Intent(this, WorkoutDoneActivity::class.java)
+                            startActivity(i)
                         }
                     },
                     {

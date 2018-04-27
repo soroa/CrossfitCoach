@@ -4,7 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
-import com.example.mac.crossfitcoach.record_session.RecordExerciseViewModel
+import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseViewModel
 
 val RECORD_EXERCISE = RecordExerciseViewModel::class.java.name
 const val INT_VALUE = "INT_VALUE"

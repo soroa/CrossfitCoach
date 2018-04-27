@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.mac.crossfitcoach.main;
+package com.example.mac.crossfitcoach.screens.main;
 
 import android.support.v4.app.NotificationCompat;
 import android.support.wear.widget.WearableRecyclerView;

@@ -1,4 +1,4 @@
-package com.example.mac.crossfitcoach.log
+package com.example.mac.crossfitcoach.screens.log
 
 import android.content.Context
 import android.graphics.Color

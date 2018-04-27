@@ -6,7 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.example.mac.crossfitcoach.dbjava.SensorReading
-import com.example.mac.crossfitcoach.record_session.WorkoutStep
+import com.example.mac.crossfitcoach.screens.record_session.WorkoutStep
 import java.util.*
 
 class MySensorManager(context: Context, sensorCodes: Array<Int>, private val workoutStep:WorkoutStep) : SensorEventListener {
