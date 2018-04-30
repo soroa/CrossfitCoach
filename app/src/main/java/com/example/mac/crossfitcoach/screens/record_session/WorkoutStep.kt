@@ -12,7 +12,11 @@ val codeToNameExerciseMap = mapOf(Exercise.DEAD_LIFT to "Dead Lift",
         Exercise.BOX_JUMPS to "Box jumps",
         Exercise.KETTLE_BELL_SWINGS to "Kettle B swings",
         Exercise.DEAD_LIFT to "Dead lifts",
-        Exercise.THRUSTERS to "Thrusters")
+        Exercise.THRUSTERS to "Thrusters",
+        Exercise.CRUNCHES to "Crunches",
+        Exercise.SINGLE_UNDERS to "Crunches",
+        Exercise.DOUBLE_UNDERS to "Double unders"
+)
 
 val codeToRepsMap = mapOf(Exercise.DEAD_LIFT to 5,
         Exercise.PUSH_UPS to 5,
@@ -22,5 +26,7 @@ val codeToRepsMap = mapOf(Exercise.DEAD_LIFT to 5,
         Exercise.BOX_JUMPS to 5,
         Exercise.KETTLE_BELL_SWINGS to 5,
         Exercise.DEAD_LIFT to 5,
-        Exercise.THRUSTERS to 5)
-
+        Exercise.THRUSTERS to 5,
+        Exercise.CRUNCHES to 5,
+        Exercise.DOUBLE_UNDERS to 5,
+        Exercise.SINGLE_UNDERS to 5)

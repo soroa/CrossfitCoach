@@ -49,12 +49,12 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         reps_tv.text = codeToRepsMap.get(exCode).toString() + " reps"
         record_btn.setOnClickListener { view ->
             if (isRecording) {
-                stopTimer()
                 model.stopRecording()
+                stopTimer()
                 isRecording = false
             } else {
-                startTimer()
                 model.startRecording()
+                startTimer()
                 isRecording = true
             }
         }
@@ -64,28 +64,37 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
             model.deleteRecording()
             showSaveDeleteButtons(false)
             record_btn.setBackgroundResource(R.drawable.circle_red)
+            record_btn.text = "REC"
         }
         save_recording_btn.setOnClickListener {
-            progress_spinner.visibility=View.VISIBLE
             model.saveRecording().subscribe(
                     {
-                        showSaveDeleteButtons(false)
-                        record_btn.setBackgroundResource(R.drawable.circle_red)
-                        if (!model.isLastStep()) {
-                            current_exercise_name_tv.text = codeToNameExerciseMap.get(model.getNextWorkoutStep().exerciseCode)
-                            progress_spinner.visibility=View.GONE
-                            session_timer_tv.text = "00:00"
-                        } else {
-                            val i = Intent(this, WorkoutDoneActivity::class.java)
-                            finish()
-                            startActivity(i)
-                        }
+
                     },
                     {
                         //todo
                     }
             )
+            goToNextStep()
         }
+    }
+
+    private fun goToNextStep() {
+        if (!model.isLastStep()) {
+            current_exercise_name_tv.text = codeToNameExerciseMap.get(model.getNextWorkoutStep().exerciseCode)
+            session_timer_tv.text = "00:00"
+            showSaveDeleteButtons(false)
+            record_btn.setBackgroundResource(R.drawable.circle_red)
+        } else {
+            val i = Intent(this, WorkoutDoneActivity::class.java)
+            finish()
+            startActivity(i)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        model.stopRecording()
     }
 
     private fun showSaveDeleteButtons(show: Boolean) {
@@ -103,6 +112,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
     private fun startTimer() {
         var startTime = 0L
         record_btn.setBackgroundResource(R.drawable.square)
+        record_btn.text = "STOP"
         session_timer_tv.setTextColor(getColor(R.color.red))
         timer = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())

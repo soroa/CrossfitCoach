@@ -2,6 +2,7 @@ package com.example.mac.crossfitcoach.screens.record_session
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Room
 import android.hardware.Sensor
 import com.example.mac.crossfitcoach.dbjava.Exercise
@@ -26,14 +27,16 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
     private var workoutSteps: Array<WorkoutStep> = arrayOf(
             WorkoutStep(PUSH_UPS),
             WorkoutStep(PULL_UPS),
+            WorkoutStep(DOUBLE_UNDERS),
+            WorkoutStep(DEAD_LIFT),
+            WorkoutStep(BOX_JUMPS),
             WorkoutStep(SQUATS),
-            WorkoutStep(KETTLE_BELL_SWINGS),
-            WorkoutStep(DEAD_LIFT))
+            WorkoutStep(CRUNCHES),
+            WorkoutStep(KETTLE_BELL_SWINGS))
 
     init {
         sensorManager = MySensorManager(getApplication(),
-                arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_PROXIMITY),
-                workoutSteps[currentStep])
+                arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ROTATION_VECTOR))
     }
 
     fun startRecording() {
@@ -71,7 +74,7 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
             setExerciseId()
             db.sensorReadingsDao().saveAll(sensorManager.getReadings())
         }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.computation())
     }
 
     private fun setExerciseId() {

@@ -25,6 +25,9 @@ public class Exercise {
     public static final int SQUATS = 6;
     public static final int DEAD_LIFT = 7;
     public static final int THRUSTERS = 8;
+    public static final int DOUBLE_UNDERS = 9;
+    public static final int SINGLE_UNDERS = 10;
+    public static final int CRUNCHES = 11;
 
 
     @Retention(SOURCE)

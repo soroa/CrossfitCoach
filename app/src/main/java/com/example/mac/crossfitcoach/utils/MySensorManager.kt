@@ -5,11 +5,11 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
 import com.example.mac.crossfitcoach.dbjava.SensorReading
-import com.example.mac.crossfitcoach.screens.record_session.WorkoutStep
 import java.util.*
 
-class MySensorManager(context: Context, sensorCodes: Array<Int>, private val workoutStep:WorkoutStep) : SensorEventListener {
+class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventListener {
 
     val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val sensors = mutableListOf<Sensor>()
@@ -25,7 +25,6 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>, private val wor
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
