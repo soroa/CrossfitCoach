@@ -8,6 +8,7 @@ import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.main.MainMenuActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import kotlinx.android.synthetic.main.activity_sensor_placement.*
+import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
 
 class SensorPlacementActivity : WearableActivity() {
 
@@ -24,7 +25,10 @@ class SensorPlacementActivity : WearableActivity() {
         }
         ankle.setOnClickListener {
             sharedPreferencesHelper.setSmartwatchPosition(SensorReading.ANKLE)
-            val i = Intent(this, MainMenuActivity::class.java)
+            val i = Intent(this, InstructionActivity::class.java)
+            val extras = Bundle()
+            extras.putString(InstructionActivity.INSTRUCTION_TEXT_EXTRA, getString(R.string.put_watch_on_ankle_instruction))
+            i.putExtras(extras)
             startActivity(i)
         }
     }

@@ -35,6 +35,7 @@
         </activity>
 
         <activity android:name=".screens.main.MainMenuActivity" />
+        <activity android:name=".screens.instruction.InstructionActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.log.LogActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity" />
         <activity android:name=".screens.exercise_list.ExerciseListActivity" />
