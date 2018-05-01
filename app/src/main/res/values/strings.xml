@@ -11,4 +11,6 @@
     <string name="recording">Recording</string>
     <string name="idle">Idle</string>
     <string name="Disconnected">Disconnected</string>
+    <string name="smart_watch_position" >SMART_WATCH_POSITION</string>
+
 </resources>
