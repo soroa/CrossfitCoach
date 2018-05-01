@@ -17,8 +17,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         parentColumns = "id",
         childColumns = "exercise_id", onDelete = CASCADE))
 public class SensorReading {
-    public static final int ANKLE=0;
-    public static final int WRIST=1;
+    public static final int ANKLE = 0;
+    public static final int WRIST = 1;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -34,11 +34,12 @@ public class SensorReading {
     @ColumnInfo(name = "placement")
     int placement;
 
-    public SensorReading(int sensorType, float[] values, long exerciseId, Date timestamp, int sensorPlacement) {
+    public SensorReading(int sensorType, float[] values, long exerciseId, Date timestamp, int placement) {
         this.sensorType = sensorType;
         this.values = values;
         this.exerciseId = exerciseId;
         this.timestamp = timestamp;
+        this.placement = placement;
     }
 
     public int getSensorType() {
@@ -59,6 +60,10 @@ public class SensorReading {
 
     public void setExerciseId(long exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    public void setPlacement(int placement) {
+        this.placement = placement;
     }
 
     @Override
