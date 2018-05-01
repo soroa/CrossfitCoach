@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.util.Log
+import com.example.mac.crossfitcoach.communication.BluetoothHelper
 
 
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
@@ -57,6 +58,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
         setAmbientEnabled()
         initRecyclerView()
         printSensors()
+        BluetoothHelper(this)
     }
 
     private fun printSensors() {
