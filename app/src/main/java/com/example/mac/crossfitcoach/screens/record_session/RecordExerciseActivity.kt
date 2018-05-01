@@ -26,7 +26,10 @@ import java.util.concurrent.TimeUnit
 class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
 
     override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return object : AmbientModeSupport.AmbientCallback() {
+            override fun onEnterAmbient(ambientDetails: Bundle?) {}
+            override fun onExitAmbient() {}
+        }
     }
 
     private lateinit var model: RecordExerciseViewModel
@@ -36,6 +39,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
+        val myAmbientCallback = AmbientModeSupport.attach(this)
         var args = Bundle()
         args.putInt(INT_VALUE, Exercise.BOX_JUMPS)
         model = ViewModelProviders.of(this, CustomViewModelFactory(RECORD_EXERCISE, args, application)).get(RecordExerciseViewModel::class.java)
@@ -69,7 +73,6 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         save_recording_btn.setOnClickListener {
             model.saveRecording().subscribe(
                     {
-
                     },
                     {
                         //todo
