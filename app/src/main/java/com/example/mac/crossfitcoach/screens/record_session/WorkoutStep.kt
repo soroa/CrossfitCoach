@@ -1,8 +1,14 @@
 package com.example.mac.crossfitcoach.screens.record_session
 
 import com.example.mac.crossfitcoach.dbjava.Exercise
+import com.example.mac.crossfitcoach.dbjava.SensorReading
+import java.util.*
 
-data class WorkoutStep(var exerciseCode:Int, var exerciseName:String? = codeToNameExerciseMap.get(exerciseCode))
+data class WorkoutStep(var exerciseCode: Int,
+                       var startTime: Date? = null,
+                       var endTime: Date? = null,
+                       var readings:List<SensorReading>? = null,
+                       var exerciseName: String? = codeToNameExerciseMap.get(exerciseCode))
 
 val codeToNameExerciseMap = mapOf(Exercise.DEAD_LIFT to "Dead Lift",
         Exercise.PUSH_UPS to "Push ups",

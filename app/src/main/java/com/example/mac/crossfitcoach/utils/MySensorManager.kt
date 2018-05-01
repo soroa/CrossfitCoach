@@ -48,6 +48,7 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     }
 
     fun startSensing() {
+        sensorReadingsLocal.clear()
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }

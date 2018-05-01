@@ -2,9 +2,9 @@ package com.example.mac.crossfitcoach.screens.record_session
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Room
 import android.hardware.Sensor
+import android.util.Log
 import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.dbjava.Exercise.*
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
@@ -22,8 +22,6 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
             SensorDatabase::class.java, "sensor_readings").build()
     private var sensorManager: MySensorManager
     private var currentStep: Int = 0
-    private var exerciseStartTime: Date? = null
-    private var exerciseEndTime: Date? = null
     private var workoutSteps: Array<WorkoutStep> = arrayOf(
             WorkoutStep(PUSH_UPS),
             WorkoutStep(PULL_UPS),
@@ -40,7 +38,7 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun startRecording() {
-        exerciseStartTime = Calendar.getInstance().time
+        workoutSteps.get(currentStep).startTime = Calendar.getInstance().time
         sensorManager.startSensing()
     }
 
@@ -56,7 +54,8 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun stopRecording() {
-        exerciseStartTime = Calendar.getInstance().time
+        workoutSteps.get(currentStep).endTime = Calendar.getInstance().time
+        workoutSteps.get(currentStep).readings = sensorManager.getReadings().toMutableList()
         sensorManager.stopSensing()
     }
 
@@ -67,21 +66,23 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
     private var workoutId: Long? = -1
 
     fun saveRecording(): Completable {
+        val workoutStep = workoutSteps[currentStep]
         return Completable.fromAction {
-            if (currentStep == 0) {
+            if (workoutSteps.indexOf(workoutStep) == 0) {
                 workoutId = db.workoutDao().save(WorkoutSession(Calendar.getInstance().time))
             }
-            setExerciseId()
-            db.sensorReadingsDao().saveAll(sensorManager.getReadings())
+            setExerciseId(workoutStep)
+            db.sensorReadingsDao().saveAll(workoutStep.readings)
         }.subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .doOnError { Log.d("Andrea", "error " + it.message) }
+                .doOnComplete { Log.d("Andrea", "completed") }
     }
 
-    private fun setExerciseId() {
-        //TODO throw exception
-        val exerciseId = db.exerciseDao().save(Exercise(exerciseStartTime, exerciseEndTime, workoutSteps.get(currentStep).exerciseCode, workoutId
+    private fun setExerciseId(workoutStep: WorkoutStep) {
+        val exerciseId = db.exerciseDao().save(Exercise(workoutStep.startTime, workoutStep.endTime, workoutStep.exerciseCode, workoutId
                 ?: 0))
-        for (reading in sensorManager.getReadings()) {
+        for (reading in workoutStep.readings!!) {
             reading.exerciseId = exerciseId
         }
     }
