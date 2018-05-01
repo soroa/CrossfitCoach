@@ -32,7 +32,7 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
                 , sensorEvent.values.copyOf()
                 , 0
-                , Calendar.getInstance().time))
+                , Calendar.getInstance().time, SensorReading.WRIST))
     }
 
     fun stopSensing() {
