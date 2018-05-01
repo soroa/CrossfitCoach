@@ -23,4 +23,14 @@ class SharedPreferencesHelper(val context: Context) {
         }
     }
 
+    fun isFirstTime(): Boolean {
+        return sharedPrefs.getBoolean(context.getString(R.string.is_first_time), true)
+    }
+
+    fun setIsFirstTime(isFirstTime: Boolean) {
+        with(sharedPrefs.edit()) {
+            putBoolean(context.getString(R.string.is_first_time), isFirstTime)
+            commit()
+        }
+    }
 }
