@@ -7,4 +7,8 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="kb_swings">KB-Swing</string>
     <string name="pushups">Push ups</string>
+    <string name="put_watch_on_ankle_instruction">Now place this smartwatch onto your ankle!</string>
+    <string name="recording">Recording</string>
+    <string name="idle">Idle</string>
+    <string name="Disconnected">Disconnected</string>
 </resources>
