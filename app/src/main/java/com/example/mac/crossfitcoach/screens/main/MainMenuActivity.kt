@@ -1,6 +1,7 @@
 package com.example.mac.crossfitcoach.screens.main
 
 import android.arch.persistence.room.Room
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.wear.widget.WearableLinearLayoutManager
@@ -8,13 +9,15 @@ import android.support.wearable.activity.WearableActivity
 import android.widget.Toast
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
-import com.example.mac.crossfitcoach.screens.exercise_list.ExerciseListActivity
 import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
-import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import android.hardware.Sensor
+import android.hardware.SensorManager
+import android.util.Log
+
 
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
 
@@ -24,7 +27,6 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onItemListClicked(index: Int) {
         when (index) {
             0 -> {
-//                val i = Intent(this, RecordExerciseActivity::class.java)
                 val i = Intent(this, RecordExerciseActivity::class.java)
                 startActivity(i)
             }
@@ -32,8 +34,6 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 val db = Room.databaseBuilder(getApplication(),
                         SensorDatabase::class.java, "sensor_readings").build()
                 Completable.fromAction {
-                    db.sensorReadingsDao().nukeTable()
-                    db.exerciseDao().nukeTable()
                     db.workoutDao().nukeTable()
                 }.subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -53,11 +53,18 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // Enables Always-on
-
         emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb))
         setAmbientEnabled()
         initRecyclerView()
+        printSensors()
+    }
+
+    private fun printSensors() {
+        val oSM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensorsList = oSM.getSensorList(Sensor.TYPE_ALL)
+        for (s in sensorsList) {
+            Log.d("Andrea", (s.toString() + "\n"))
+        }
     }
 
     private fun initRecyclerView() {
@@ -65,7 +72,6 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
         recycler_view.layoutManager = WearableLinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
         recycler_view.isEdgeItemsCenteringEnabled = true;
-
         stringAdapter = StringRecyclerAdapter(emojis,
                 strings, this)
         recycler_view.adapter = stringAdapter

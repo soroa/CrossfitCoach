@@ -37,7 +37,9 @@
         <activity android:name="com.example.mac.crossfitcoach.screens.log.LogActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity" />
         <activity android:name=".screens.exercise_list.ExerciseListActivity" />
-        <activity android:name="com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity" />
+        <activity android:name="com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity"
+            android:keepScreenOn="true"
+            />
 
     </application>
 
