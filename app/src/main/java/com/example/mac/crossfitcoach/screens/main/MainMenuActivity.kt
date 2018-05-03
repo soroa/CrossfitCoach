@@ -23,7 +23,7 @@ import com.example.mac.crossfitcoach.communication.BluetoothHelper
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
 
     private lateinit var emojis: Array<String>
-    private val strings = arrayOf("Start Workout", "Delete Database")
+    private val strings = arrayOf("Start Workout", "Delete Database", "Connect to Ankle Sensor")
 
     override fun onItemListClicked(index: Int) {
         when (index) {
@@ -46,6 +46,9 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                                 }
                         )
             }
+            2 -> {
+
+            }
         }
     }
 
@@ -54,7 +57,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb))
+        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb), getString(R.string.emoji_ankle))
         setAmbientEnabled()
         initRecyclerView()
         printSensors()
