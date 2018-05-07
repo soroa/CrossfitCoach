@@ -18,19 +18,35 @@ class SensorPlacementActivity : WearableActivity() {
         setContentView(R.layout.activity_sensor_placement)
 
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
-        sharedPreferencesHelper.setIsFirstTime(false)
+        if (sharedPreferencesHelper.isFirstTime()) {
+            sharedPreferencesHelper.setIsFirstTime(false)
+        } else {
+            if (sharedPreferencesHelper.getSmartWatchPosition() == SensorReading.ANKLE) {
+                startAnkle()
+            } else {
+                startWrist()
+            }
+        }
         wrist.setOnClickListener {
             sharedPreferencesHelper.setSmartwatchPosition(SensorReading.WRIST)
-            val i = Intent(this, MainMenuActivity::class.java)
-            startActivity(i)
+            startWrist()
         }
         ankle.setOnClickListener {
             sharedPreferencesHelper.setSmartwatchPosition(SensorReading.ANKLE)
-            val i = Intent(this, AcceptConnectionActivity::class.java)
-            val extras = Bundle()
-            extras.putString(InstructionActivity.INSTRUCTION_TEXT_EXTRA, getString(R.string.put_watch_on_ankle_instruction))
-            i.putExtras(extras)
-            startActivity(i)
+            startAnkle()
         }
+    }
+
+    private fun startAnkle() {
+        val i = Intent(this, AcceptConnectionActivity::class.java)
+        val extras = Bundle()
+        extras.putString(InstructionActivity.INSTRUCTION_TEXT_EXTRA, getString(R.string.put_watch_on_ankle_instruction))
+        i.putExtras(extras)
+        startActivity(i)
+    }
+
+    private fun startWrist() {
+        val i = Intent(this, MainMenuActivity::class.java)
+        startActivity(i)
     }
 }

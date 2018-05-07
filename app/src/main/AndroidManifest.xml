@@ -7,11 +7,18 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
@@ -38,11 +45,14 @@
 
         <activity android:name=".screens.ankle_connection.AcceptConnectionActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.log.LogActivity" />
+        <activity android:name=".screens.test.TestActivity" />
         <activity android:name=".screens.main.MainMenuActivity" />
+        <activity android:name=".screens.ble_list.BleClientDeviceListActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity" />
         <activity android:name=".screens.exercise_list.ExerciseListActivity" />
-        <activity android:name="com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity"
-            android:keepScreenOn="true"/>
+        <activity
+            android:name="com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity"
+            android:keepScreenOn="true" />
 
     </application>
 </manifest>

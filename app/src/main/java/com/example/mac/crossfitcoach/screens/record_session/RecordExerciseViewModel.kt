@@ -25,7 +25,7 @@ class RecordExerciseViewModel(application: Application) : AndroidViewModel(appli
     private var workoutSteps: Array<WorkoutStep> = arrayOf(
             WorkoutStep(PUSH_UPS),
             WorkoutStep(PULL_UPS),
-            WorkoutStep(DOUBLE_UNDERS),
+            WorkoutStep(BURPEES),
             WorkoutStep(DEAD_LIFT),
             WorkoutStep(BOX_JUMPS),
             WorkoutStep(SQUATS),
