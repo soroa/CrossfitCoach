@@ -33,7 +33,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onItemListClicked(index: Int) {
         when (index) {
             0 -> {
-                val i = Intent(this, RecordExerciseActivity::class.java)
+                val i = Intent(this, BleClientDeviceListActivity::class.java)
                 startActivity(i)
             }
             1 -> {

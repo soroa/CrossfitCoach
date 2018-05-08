@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 
-class RecordExerciseViewModel(application: Application) : AndroidViewModel(application) {
+open class RecordExerciseWristViewModel(application: Application) : AndroidViewModel(application) {
 
     private var db: SensorDatabase = Room.databaseBuilder(getApplication(),
             SensorDatabase::class.java, "sensor_readings").build()

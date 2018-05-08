@@ -4,9 +4,9 @@ import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
-import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseViewModel
+import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseWristViewModel
 
-val RECORD_EXERCISE = RecordExerciseViewModel::class.java.name
+val RECORD_EXERCISE = RecordExerciseWristViewModel::class.java.name
 const val INT_VALUE = "INT_VALUE"
 
 
@@ -14,7 +14,7 @@ class CustomViewModelFactory(private val model: String, val args: Bundle, val ap
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when (model) {
-            RECORD_EXERCISE -> return RecordExerciseViewModel(app) as T
+            RECORD_EXERCISE -> return RecordExerciseWristViewModel(app) as T
             else ->
                 throw Exception("bla")
         }

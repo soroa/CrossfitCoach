@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleServer
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,11 +20,10 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onMessageReceived(msg: String) {
         if (msg.equals("Red")) instruction_container.background = getDrawable(R.color.red)
         if (msg.equals("Blue")) instruction_container.background = getDrawable(R.color.blue)
-        if (msg.equals("Start Workout")) {
+        if (msg.equals(WorkoutCommand.BLE_START_WORKOUT.toString())) {
             val i = Intent(this, RecordExerciseActivity::class.java)
             startActivity(i)
         }
-
     }
 
     private lateinit var bluetoothServer: BleServer
@@ -31,7 +31,6 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -66,8 +65,8 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onPause() {
         super.onPause()
         bluetoothServer.stopAdvertising()
+        bluetoothServer.removeBleEventListener(this)
     }
-
 
     override fun onDeviceConnected(dev: BluetoothDevice) {
         Completable.fromAction {

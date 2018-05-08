@@ -17,13 +17,11 @@ import java.util.concurrent.TimeUnit
 import android.bluetooth.BluetoothGattService
 
 
-
-
 class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventListener>() {
 
     private var mGatt: BluetoothGatt? = null
     var mConnected: Boolean = false
-
+    private var mInitialized: Boolean = false
     private var BLEAdapter: BluetoothAdapter
     private var scanner: BluetoothLeScanner
     private var mHandler = Handler()
@@ -79,18 +77,12 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
     }
 
     fun connectDevice(device: BluetoothDevice) {
-//        if (device == connectedDevice) {
-//            discoverServices()
-//            return
-//        }
         if (connectedDevice != device) {
             disconnectGattServer()
         }
         var gattClientCallback = GattClientCallback();
         mGatt = device.connectGatt(context, false, gattClientCallback);
     }
-
-    private var mInitialized: Boolean = false
 
     private inner class GattClientCallback : BluetoothGattCallback() {
         override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
@@ -107,10 +99,9 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
             Log.d("Andrea", "service initilizaed " + mInitialized)
             if (mInitialized) {
                 for (l in listeners) l.onServiceFound()
-            }else{
+            } else {
                 disconnectGattServer()
                 Log.d("Andrea", "service initilizaed " + mInitialized)
-
             }
         }
 

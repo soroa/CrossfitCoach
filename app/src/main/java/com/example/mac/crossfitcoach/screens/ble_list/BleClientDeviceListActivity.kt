@@ -9,13 +9,16 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleClient
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
 import com.example.mac.crossfitcoach.screens.test.TestActivity
 import kotlinx.android.synthetic.main.activity_ble_devices_list.*
 
 class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientEventListener, BleDevicesRecyclerAdapter.OnBleDeviceClicked {
 
     override fun onServiceFound() {
-        val i = Intent(this, TestActivity::class.java)
+        (application as MyApplication).bleClient.sendMsg(WorkoutCommand.BLE_START_WORKOUT.toString())
+        val i = Intent(this, RecordExerciseActivity::class.java)
         startActivity(i)
     }
 

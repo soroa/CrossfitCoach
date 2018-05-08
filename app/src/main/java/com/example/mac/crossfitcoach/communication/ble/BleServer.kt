@@ -94,7 +94,7 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
     }
 
     private inner class GattServerCallback : BluetoothGattServerCallback() {
-        
+
         override fun onConnectionStateChange(device: BluetoothDevice?, status: Int, newState: Int) {
             super.onConnectionStateChange(device, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -115,7 +115,6 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
             if (characteristic?.getUuid()!!.equals(characteristicUUID)) {
                 mGattServer?.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null)
                 val message = String(value!!)
-                Log.d("Andrea", "Message " + message)
                 Completable.fromAction {
                     for (l in listeners) l.onMessageReceived(message)
                 }
