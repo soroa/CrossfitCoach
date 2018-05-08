@@ -94,16 +94,15 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
     }
 
     private inner class GattServerCallback : BluetoothGattServerCallback() {
-
+        
         override fun onConnectionStateChange(device: BluetoothDevice?, status: Int, newState: Int) {
             super.onConnectionStateChange(device, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d("Andrea", "connection connected on server")
+                for (l in listeners) l.onDeviceConnected(device!!)
                 if (!connectedDevices.contains(device)) {
                     connectedDevices.add(device)
-                    for (l in listeners) l.onDeviceConnected(device!!)
                 }
-                stopAdvertising()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.d("Andrea", "connection disconnected on server")
                 for (l in listeners) l.onDeviceDisconnected(device!!)
@@ -137,5 +136,6 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
         fun onDeviceConnected(dev: BluetoothDevice)
         fun onDeviceDisconnected(dev: BluetoothDevice)
         fun onMessageReceived(msg: String)
+
     }
 }

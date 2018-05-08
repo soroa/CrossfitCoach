@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="50dp">
 
+    <View
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="1dp"
+        android:background="@color/white" />
     <ProgressBar
         android:id="@+id/ble_device_progress"
         android:layout_width="wrap_content"
@@ -22,7 +29,4 @@
         app:layout_constraintStart_toEndOf="@id/ble_device_progress"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="hola" />
-
-
-
 </android.support.constraint.ConstraintLayout>

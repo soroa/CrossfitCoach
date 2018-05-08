@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleServer
+import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_message.*
@@ -16,14 +17,19 @@ import kotlinx.android.synthetic.main.activity_message.*
 
 class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEventListener {
     override fun onMessageReceived(msg: String) {
-        Toast.makeText(this, "Message received " + msg, Toast.LENGTH_SHORT).show()
+        if (msg.equals("Red")) instruction_container.background = getDrawable(R.color.red)
+        if (msg.equals("Blue")) instruction_container.background = getDrawable(R.color.blue)
+        if (msg.equals("Start Workout")) {
+            val i = Intent(this, RecordExerciseActivity::class.java)
+            startActivity(i)
+        }
+
     }
 
     private lateinit var bluetoothServer: BleServer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
-        bluetoothServer.setBleEventListener(this)
     }
 
 
@@ -42,15 +48,16 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
             finish()
         } else {
             initView()
-                bluetoothServer.startAdvertising()
+            bluetoothServer.setBleEventListener(this)
+            bluetoothServer.startAdvertising()
         }
     }
 
     private fun initView() {
-        if(bluetoothServer.connectedDevices.size>0){
+        if (bluetoothServer.connectedDevices.size > 0) {
             instruction_text_tv.setText("Devices connected " + bluetoothServer.connectedDevices.size + " \n \n " + bluetoothServer.connectedDevices.get(0)!!.name)
             instruction_container.background = getDrawable(R.color.green)
-        }else{
+        } else {
             instruction_text_tv.setText("Devices connected " + bluetoothServer.connectedDevices.size)
             instruction_container.background = getDrawable(R.color.dark_grey)
         }
@@ -61,24 +68,19 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         bluetoothServer.stopAdvertising()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bluetoothServer.stopServer()
-    }
-
 
     override fun onDeviceConnected(dev: BluetoothDevice) {
         Completable.fromAction {
             Toast.makeText(this, "Connected to " + dev.name, Toast.LENGTH_SHORT).show()
+            initView()
         }.subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe()
-        initView()
     }
 
     override fun onDeviceDisconnected(dev: BluetoothDevice) {
-        Toast.makeText(this, "Disconnected from " + dev.name, Toast.LENGTH_SHORT).show()
         Completable.fromAction {
-            instruction_container.background = getDrawable(R.color.dark_grey)
+            Toast.makeText(this, "Disconnected from " + dev.name, Toast.LENGTH_SHORT).show()
+            initView()
         }
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())

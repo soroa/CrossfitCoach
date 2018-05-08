@@ -14,12 +14,10 @@ class TestActivity : WearableActivity() {
         val bleClient = (application as MyApplication).bleClient
 
         test_start.setOnClickListener {
-            bleClient.sendMsg("Start")
+            bleClient.sendMsg("Blue")
         }
         test_stop.setOnClickListener {
-            bleClient.sendMsg("Start")
+            bleClient.sendMsg("Start Workout")
         }
     }
-
-
 }

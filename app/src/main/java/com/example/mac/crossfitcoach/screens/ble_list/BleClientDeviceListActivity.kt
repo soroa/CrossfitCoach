@@ -37,11 +37,7 @@ class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientEvent
 
     override fun onBleDeviceClicked(device: BluetoothDevice) {
         (application as MyApplication).bleClient.scanLeDevices(false)
-        if ((application as MyApplication).bleClient.mConnected) {
-            (application as MyApplication).bleClient.discoverServices()
-        } else {
-            (application as MyApplication).bleClient.connectDevice(device)
-        }
+        (application as MyApplication).bleClient.connectDevice(device)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

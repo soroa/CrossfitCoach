@@ -11,7 +11,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="50dp"
-        android:text="Start" />
+        android:text="Blue" />
 
     <Button
         android:id="@+id/test_stop"
@@ -20,6 +20,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_start"
         android:layout_height="50dp"
-        android:text="Stop" />
+        android:text="Start Activity\" />
 
 </android.support.constraint.ConstraintLayout>

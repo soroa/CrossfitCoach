@@ -90,11 +90,10 @@ public class BleDevicesRecyclerAdapter extends
             }
         });
         if (devices.get(position).getName() == null) {
-            bleDeviceVh.deviceName.setText("UNKNOWN");
+            bleDeviceVh.deviceName.setText(devices.get(position).getAddress());
         } else {
             bleDeviceVh.deviceName.setText(devices.get(position).getName());
         }
-        UtilsKt.addTouchEffect(bleDeviceVh.deviceName);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -102,7 +101,6 @@ public class BleDevicesRecyclerAdapter extends
     public int getItemCount() {
         return devices.size();
     }
-
 
     public interface OnBleDeviceClicked {
 
