@@ -13,6 +13,7 @@
     <string name="Disconnected">Disconnected</string>
     <string name="smart_watch_position" >SMART_WATCH_POSITION</string>
     <string name="is_first_time" >IS_FIRST_TIME</string>
+    <string name="clock_difference_ms" >CLOCK_DIFFERENCE_MS</string>
     <string name="wrist">Wrist</string>
     <string name="ankle">Ankle</string>
     <string name="stop">STOP</string>

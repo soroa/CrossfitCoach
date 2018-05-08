@@ -16,6 +16,10 @@ class SharedPreferencesHelper(val context: Context) {
         return sharedPrefs.getInt(context.getString(R.string.smart_watch_position), SensorReading.WRIST)
     }
 
+    fun getClientTimestampDifference(): Long {
+        return sharedPrefs.getLong(context.getString(R.string.clock_difference_ms), 0)
+    }
+
     fun setSmartwatchPosition(position: Int) {
         with(sharedPrefs.edit()) {
             putInt(context.getString(R.string.smart_watch_position), position)
@@ -33,4 +37,12 @@ class SharedPreferencesHelper(val context: Context) {
             commit()
         }
     }
+
+    fun setClockDifference(clockDifference: Long) {
+        with(sharedPrefs.edit()) {
+            putLong(context.getString(R.string.is_first_time), clockDifference)
+            commit()
+        }
+    }
+
 }
