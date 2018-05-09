@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.activity_message.*
 
 
 class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEventListener {
-    override fun onMessageReceived(msg: String) {
+    override fun onMessageReceived(msg: WorkoutCommand) {
         if (msg.equals("Red")) instruction_container.background = getDrawable(R.color.red)
         if (msg.equals("Blue")) instruction_container.background = getDrawable(R.color.blue)
-        if (msg.equals(WorkoutCommand.BLE_START_WORKOUT.toString())) {
+        if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, RecordExerciseActivity::class.java)
             startActivity(i)
         }

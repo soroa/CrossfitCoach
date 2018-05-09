@@ -12,6 +12,7 @@ import android.util.Log
 import java.util.*
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothDevice
+import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -68,7 +69,6 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
         return (mBluetoothAdapter.isEnabled)
     }
 
-
     fun startAdvertising() {
         Log.d("Andrea", "Start Advertising function")
         if (mBluetoothLeAdvertiser == null) {
@@ -86,7 +86,7 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
                 .setIncludeDeviceName(true)
                 .addServiceUuid(parcelUuid)
                 .build()
-        mBluetoothLeAdvertiser!!.startAdvertising(settings, data, mAdvertiseCallback);
+        mBluetoothLeAdvertiser!!.startAdvertising(settings, data, mAdvertiseCallback)
     }
 
     fun stopAdvertising() {
@@ -114,18 +114,13 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
             super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value)
             if (characteristic?.getUuid()!!.equals(characteristicUUID)) {
                 mGattServer?.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null)
-                val message = String(value!!)
+                val message = Gson().fromJson(String(value!!), WorkoutCommand::class.java)
                 Completable.fromAction {
                     for (l in listeners) l.onMessageReceived(message)
                 }
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .observeOn(AndroidSchedulers.mainThread()).subscribe()
-                val length = value!!.size
-                val reversed = ByteArray(length)
-                for (i in 0 until length) {
-                    reversed[i] = value[length - (i + 1)]
-                }
-                characteristic!!.setValue(reversed)
+                characteristic.value = value
                 mGattServer!!.notifyCharacteristicChanged(device, characteristic, false)
             }
         }
@@ -134,7 +129,6 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
     interface BleServerEventListener : BleEndPoint.BleEventListener {
         fun onDeviceConnected(dev: BluetoothDevice)
         fun onDeviceDisconnected(dev: BluetoothDevice)
-        fun onMessageReceived(msg: String)
-
+        fun onMessageReceived(workoutCommand: WorkoutCommand)
     }
 }

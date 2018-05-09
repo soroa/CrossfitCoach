@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import com.example.mac.crossfitcoach.dbjava.SensorReading
+import com.instacart.library.truetime.TrueTime
 import java.util.*
 
 class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventListener {
@@ -14,6 +15,7 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val sensors = mutableListOf<Sensor>()
     private val sensorReadingsLocal = mutableListOf<SensorReading>()
+    private val sensorPosition: Int = SharedPreferencesHelper(context).getSmartWatchPosition()
 
     init {
         for (sensorCode in sensorCodes) {
@@ -31,8 +33,9 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
 
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
                 , sensorEvent.values.copyOf()
+                //exercise id will be set later
                 , 0
-                , Calendar.getInstance().time, SensorReading.WRIST))
+                , TrueTime.now(), sensorPosition))
     }
 
     fun stopSensing() {

@@ -1,16 +1,15 @@
 package com.example.mac.crossfitcoach.communication.ble
 
 
-enum class WorkoutCommand(private val str: String) {
-
-    BLE_RECORD_BUTTON_CLICK("BLE_RECORD_BUTTON_CLICK"),
-    BLE_DISCARD_EXERCISE("COMMAND_DISCARD_EXERCISE"),
-    BLE_SAVE_EXERCISE("COMMAND_SAVE_EXERCISE"),
-    BLE_START_WORKOUT("COMMAND_START_WORKOUT");
-
-    override fun toString(): String {
-        return str
+data class WorkoutCommand(
+        val command: String,
+        val timestamp: Long? = null
+) {
+    companion object {
+        val BLE_RECORD_BUTTON_CLICK = "BLE_RECORD_BUTTON_CLICK"
+        val BLE_DISCARD_EXERCISE = "COMMAND_DISCARD_EXERCISE"
+        val BLE_SAVE_EXERCISE = "COMMAND_SAVE_EXERCISE"
+        val BLE_START_WORKOUT = "COMMAND_START_WORKOUT"
+        val CLOCK_SYNCH = "COMMAND_CLOCK_SYNCH"
     }
-
-
 }

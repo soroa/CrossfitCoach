@@ -10,17 +10,20 @@ import com.example.mac.crossfitcoach.dbjava.Exercise.*
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.dbjava.WorkoutSession
 import com.example.mac.crossfitcoach.utils.MySensorManager
+import com.instacart.library.truetime.TrueTime
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import java.util.concurrent.TimeUnit
+import com.instacart.library.truetime.TrueTimeRx
 
 
-open class RecordExerciseWristViewModel(application: Application) : AndroidViewModel(application) {
+class RecordExerciseWristViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var db: SensorDatabase = Room.databaseBuilder(getApplication(),
+    private var db: SensorDatabase = Room.databaseBuilder(this.getApplication(),
             SensorDatabase::class.java, "sensor_readings").build()
-    private var sensorManager: MySensorManager
+    private var sensorManager: MySensorManager = MySensorManager(getApplication(),
+            arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ROTATION_VECTOR))
     private var currentStep: Int = 0
     private var workoutSteps: Array<WorkoutStep> = arrayOf(
             WorkoutStep(PUSH_UPS),
@@ -33,13 +36,20 @@ open class RecordExerciseWristViewModel(application: Application) : AndroidViewM
             WorkoutStep(KETTLE_BELL_SWINGS))
 
     init {
-        sensorManager = MySensorManager(getApplication(),
-                arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ROTATION_VECTOR))
+        TrueTimeRx.build()
+                .initializeRx("time.google.com")
+                .subscribeOn(Schedulers.io())
+                .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
     }
 
-    fun startRecording() {
-        workoutSteps.get(currentStep).startTime = Calendar.getInstance().time
-        sensorManager.startSensing()
+    fun startRecording(startTime: Date) {
+        val now = TrueTime.now()
+        val difference = startTime.time - now.time
+        Completable.timer(difference, TimeUnit.MILLISECONDS)
+                .subscribe {
+                    workoutSteps.get(currentStep).startTime = startTime
+                    sensorManager.startSensing()
+                }
     }
 
     fun getNextWorkoutStep(): WorkoutStep {
@@ -53,10 +63,15 @@ open class RecordExerciseWristViewModel(application: Application) : AndroidViewM
         return workoutSteps.get(currentStep)
     }
 
-    fun stopRecording() {
-        workoutSteps.get(currentStep).endTime = Calendar.getInstance().time
-        workoutSteps.get(currentStep).readings = sensorManager.getReadings().toMutableList()
-        sensorManager.stopSensing()
+    fun stopRecording(stopTime: Date) {
+        val now = TrueTime.now()
+        val difference = stopTime.time - now.time
+        Completable.timer(difference, TimeUnit.MILLISECONDS)
+                .subscribe {
+                    sensorManager.stopSensing()
+                    workoutSteps.get(currentStep).endTime = stopTime
+                    workoutSteps.get(currentStep).readings = sensorManager.getReadings().toMutableList()
+                }
     }
 
     fun deleteRecording() {
@@ -69,7 +84,7 @@ open class RecordExerciseWristViewModel(application: Application) : AndroidViewM
         val workoutStep = workoutSteps[currentStep]
         return Completable.fromAction {
             if (workoutSteps.indexOf(workoutStep) == 0) {
-                workoutId = db.workoutDao().save(WorkoutSession(Calendar.getInstance().time))
+                workoutId = db.workoutDao().save(WorkoutSession(TrueTime.now()))
             }
             setExerciseId(workoutStep)
             db.sensorReadingsDao().saveAll(workoutStep.readings)

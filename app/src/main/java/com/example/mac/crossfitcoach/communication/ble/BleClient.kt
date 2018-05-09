@@ -8,13 +8,12 @@ import android.content.Context
 import android.os.Handler
 import android.util.Log
 import android.bluetooth.BluetoothGattCharacteristic
-import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.UnsupportedEncodingException
 import java.util.concurrent.TimeUnit
-import android.bluetooth.BluetoothGattService
+import com.google.gson.Gson
+import java.util.*
 
 
 class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventListener>() {
@@ -26,6 +25,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
     private var scanner: BluetoothLeScanner
     private var mHandler = Handler()
     var connectedDevice: BluetoothDevice? = null
+    var messageLeavingTime: Date? = null
 
     private var scanning = false
 
@@ -61,7 +61,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
     }
 
     fun pauseScanning() {
-        if (scanning && BLEAdapter != null && BLEAdapter.isEnabled() && scanner != null) {
+        if (scanning && BLEAdapter.isEnabled()) {
             scanner.stopScan(object : ScanCallback() {})
         }
         scanning = false
@@ -80,8 +80,8 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
         if (connectedDevice != device) {
             disconnectGattServer()
         }
-        var gattClientCallback = GattClientCallback();
-        mGatt = device.connectGatt(context, false, gattClientCallback);
+        val gattClientCallback = GattClientCallback()
+        mGatt = device.connectGatt(context, false, gattClientCallback)
     }
 
     private inner class GattClientCallback : BluetoothGattCallback() {
@@ -93,9 +93,9 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
                 return
             }
             val service = gatt?.getService(BleServer.uuid) ?: return
-            val characteristic = service?.getCharacteristic(BleServer.characteristicUUID)
-            characteristic?.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
-            mInitialized = gatt?.setCharacteristicNotification(characteristic, true) ?: false
+            val characteristic = service.getCharacteristic(BleServer.characteristicUUID)
+            characteristic?.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            mInitialized = gatt.setCharacteristicNotification(characteristic, true)
             Log.d("Andrea", "service initilizaed " + mInitialized)
             if (mInitialized) {
                 for (l in listeners) l.onServiceFound()
@@ -103,6 +103,15 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
                 disconnectGattServer()
                 Log.d("Andrea", "service initilizaed " + mInitialized)
             }
+        }
+
+        override fun onCharacteristicWrite(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?, status: Int) {
+            super.onCharacteristicWrite(gatt, characteristic, status)
+            //todo remove arrivatl time shizzle
+            val arrivalTime = Calendar.getInstance().time.time
+            val dif = arrivalTime - messageLeavingTime!!.time
+            Log.d("Andrea", "Roundtrip time in ms: " + dif)
+            val message = Gson().fromJson(String(characteristic?.value!!), WorkoutCommand::class.java)
         }
 
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
@@ -147,13 +156,14 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
         }
     }
 
-    fun sendMsg(message: String) {
+    fun sendMsg(command: WorkoutCommand) {
         if (!mConnected) {
             return
         }
         val service = mGatt!!.getService(BleServer.uuid)
         val characteristic = service.getCharacteristic(BleServer.characteristicUUID)
         var messageBytes = ByteArray(0)
+        val message = Gson().toJson(command)
         try {
             messageBytes = message.toByteArray()
         } catch (e: UnsupportedEncodingException) {
@@ -161,6 +171,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
         }
         characteristic.value = messageBytes
         val success = mGatt!!.writeCharacteristic(characteristic)
+        messageLeavingTime = Calendar.getInstance().time
     }
 
     interface BleClientEventListener : BleEventListener {

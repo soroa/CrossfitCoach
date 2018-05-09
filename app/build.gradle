@@ -27,7 +27,7 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.support:wearable:2.3.0'
 
-    implementation 'com.google.android.gms:play-services-wearable:15.0.0'
+    implementation 'com.google.android.gms:play-services-wearable:15.0.1'
     implementation 'com.android.support:percent:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
@@ -53,6 +53,9 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    //Truetime
+    implementation 'com.github.instacart.truetime-android:library-extension-rx:3.3'
 
     //GSON
     implementation 'com.google.code.gson:gson:2.8.4'

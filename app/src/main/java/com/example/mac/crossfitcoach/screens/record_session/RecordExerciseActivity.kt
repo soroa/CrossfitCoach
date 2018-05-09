@@ -1,20 +1,25 @@
 package com.example.mac.crossfitcoach.screens.record_session
 
-import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
+import android.util.Log
 import android.view.View
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
-import com.example.mac.crossfitcoach.communication.ble.*
+import com.example.mac.crossfitcoach.communication.ble.BleServer
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand.Companion.BLE_DISCARD_EXERCISE
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand.Companion.BLE_RECORD_BUTTON_CLICK
+import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand.Companion.BLE_SAVE_EXERCISE
 import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.*
+import com.instacart.library.truetime.TrueTime
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -42,7 +47,7 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
         AmbientModeSupport.attach(this)
-        var args = Bundle()
+        val args = Bundle()
         args.putInt(INT_VALUE, Exercise.BOX_JUMPS)
         modelWrist = ViewModelProviders.of(this, CustomViewModelFactory(RECORD_EXERCISE, args, application)).get(RecordExerciseWristViewModel::class.java)
         initViews()
@@ -59,12 +64,16 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onMessageReceived(msg: String) {
-        when (msg) {
+    override fun onMessageReceived(workoutCommand: WorkoutCommand) {
+        when (workoutCommand.command) {
         //todo this button will have the synch timestamp
-            WorkoutCommand.BLE_RECORD_BUTTON_CLICK.toString() -> recordButtonClick()
-            WorkoutCommand.BLE_SAVE_EXERCISE.toString() -> saveRecordingButtonClick()
-            WorkoutCommand.BLE_DISCARD_EXERCISE.toString() -> deleteRecordingButtonClick()
+            BLE_RECORD_BUTTON_CLICK -> {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = workoutCommand.timestamp!!
+                recordButtonClick(calendar.time)
+            }
+            BLE_SAVE_EXERCISE -> saveRecordingButtonClick()
+            BLE_DISCARD_EXERCISE -> deleteRecordingButtonClick()
         }
     }
 
@@ -80,15 +89,17 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
 
     private fun initButtons() {
         record_btn.setOnClickListener { view ->
-            (application as MyApplication).bleClient.sendMsg(WorkoutCommand.BLE_RECORD_BUTTON_CLICK.toString())
-            recordButtonClick()
+            val cal = Calendar.getInstance()
+            cal.add(Calendar.SECOND, 1)
+            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(BLE_RECORD_BUTTON_CLICK, cal.timeInMillis))
+            recordButtonClick(cal.time)
         }
         delete_recording_btn.setOnClickListener {
-            (application as MyApplication).bleClient.sendMsg(WorkoutCommand.BLE_DISCARD_EXERCISE.toString())
+            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(BLE_DISCARD_EXERCISE))
             deleteRecordingButtonClick()
         }
         save_recording_btn.setOnClickListener {
-            (application as MyApplication).bleClient.sendMsg(WorkoutCommand.BLE_SAVE_EXERCISE.toString())
+            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(BLE_SAVE_EXERCISE))
             saveRecordingButtonClick()
         }
     }
@@ -113,13 +124,14 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         record_btn.text = "REC"
     }
 
-    private fun recordButtonClick() {
+    private fun recordButtonClick(time: Date) {
         if (isRecording) {
-            modelWrist.stopRecording()
+            modelWrist.stopRecording(time)
             stopTimer()
             isRecording = false
         } else {
-            modelWrist.startRecording()
+            Log.d("Andrea", "Start time:  " + time.time)
+            modelWrist.startRecording(time)
             startTimer()
             isRecording = true
         }
@@ -140,7 +152,8 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
 
     override fun onDestroy() {
         super.onDestroy()
-        modelWrist.stopRecording()
+        //todo what happens when activity is destroyed??
+        modelWrist.stopRecording(TrueTime.now())
     }
 
     private fun showSaveDeleteButtons(show: Boolean) {
@@ -164,10 +177,10 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
-                    startTime = Calendar.getInstance().getTime().time
+                    startTime = TrueTime.now().time
                 }
                 .subscribe {
-                    val timeDif = Calendar.getInstance().getTime().time - startTime
+                    val timeDif = TrueTime.now().time - startTime
                     val formatted = String.format("%02d:%02d",
                             TimeUnit.MILLISECONDS.toMinutes(timeDif),
                             TimeUnit.MILLISECONDS.toSeconds(timeDif) -
@@ -181,20 +194,6 @@ class RecordExerciseActivity : FragmentActivity(), AmbientModeSupport.AmbientCal
         session_timer_tv.setTextColor(getColor(R.color.black))
         showSaveDeleteButtons(true)
         timer?.dispose()
-    }
-
-    private fun showSaveOrDiscarDialog(myAlertDialog: AlertDialog.Builder) {
-        myAlertDialog.setTitle("Do you want to save it? ")
-        myAlertDialog.setPositiveButton("YES") { arg0, arg1 ->
-            session_timer_tv.text = "00:00"
-            modelWrist.saveRecording()
-            //go to next
-        }
-        myAlertDialog.setNegativeButton("NO") { arg0, arg1 ->
-            session_timer_tv.text = "00:00"
-            modelWrist.deleteRecording()
-        }
-        myAlertDialog.show()
     }
 
 }

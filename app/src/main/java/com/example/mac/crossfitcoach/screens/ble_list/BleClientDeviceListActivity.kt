@@ -11,13 +11,13 @@ import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleClient
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
-import com.example.mac.crossfitcoach.screens.test.TestActivity
 import kotlinx.android.synthetic.main.activity_ble_devices_list.*
 
 class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientEventListener, BleDevicesRecyclerAdapter.OnBleDeviceClicked {
 
+
     override fun onServiceFound() {
-        (application as MyApplication).bleClient.sendMsg(WorkoutCommand.BLE_START_WORKOUT.toString())
+        (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT))
         val i = Intent(this, RecordExerciseActivity::class.java)
         startActivity(i)
     }
@@ -73,7 +73,7 @@ class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientEvent
         recycler_view.isEdgeItemsCenteringEnabled = true
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
-        recycler_view.isEdgeItemsCenteringEnabled = true;
+        recycler_view.isEdgeItemsCenteringEnabled = true
         bleDevicesAdapter = BleDevicesRecyclerAdapter(devices, this)
         recycler_view.adapter = bleDevicesAdapter
     }

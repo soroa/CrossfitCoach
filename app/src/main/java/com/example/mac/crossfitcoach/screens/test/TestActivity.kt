@@ -11,13 +11,12 @@ class TestActivity : WearableActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
-        val bleClient = (application as MyApplication).bleClient
 
         test_start.setOnClickListener {
-            bleClient.sendMsg("Blue")
+//            bleClient.sendMsg("Blue")
         }
         test_stop.setOnClickListener {
-            bleClient.sendMsg("Start Workout")
+//            bleClient.sendMsg("Start Workout")
         }
     }
 }
