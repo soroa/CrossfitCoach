@@ -16,7 +16,7 @@ import com.google.gson.Gson
 import java.util.*
 
 
-class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventListener>() {
+class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectionListener>() {
 
     private var mGatt: BluetoothGatt? = null
     var mConnected: Boolean = false
@@ -25,7 +25,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
     private var scanner: BluetoothLeScanner
     private var mHandler = Handler()
     var connectedDevice: BluetoothDevice? = null
-    var messageLeavingTime: Date? = null
+    var messageCommunicationListener:BleCommunicationListener?=null
 
     private var scanning = false
 
@@ -107,11 +107,8 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?, status: Int) {
             super.onCharacteristicWrite(gatt, characteristic, status)
-            //todo remove arrivatl time shizzle
-            val arrivalTime = Calendar.getInstance().time.time
-            val dif = arrivalTime - messageLeavingTime!!.time
-            Log.d("Andrea", "Roundtrip time in ms: " + dif)
             val message = Gson().fromJson(String(characteristic?.value!!), WorkoutCommand::class.java)
+            messageCommunicationListener?.onMessageReturned(message)
         }
 
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
@@ -145,7 +142,6 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
             } catch (e: UnsupportedEncodingException) {
                 Log.e("Andrea", "Unable to convert message bytes to string")
             }
-
             Log.d("Andrea", "Received message: " + messageString!!)
         }
     }
@@ -156,7 +152,8 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
         }
     }
 
-    fun sendMsg(command: WorkoutCommand) {
+    fun sendMsg(command: WorkoutCommand, listener:BleCommunicationListener?=null) {
+        messageCommunicationListener = listener
         if (!mConnected) {
             return
         }
@@ -171,15 +168,19 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientEventList
         }
         characteristic.value = messageBytes
         val success = mGatt!!.writeCharacteristic(characteristic)
-        messageLeavingTime = Calendar.getInstance().time
     }
 
-    interface BleClientEventListener : BleEventListener {
+    interface BleClientConnectionListener : BleEventListener {
         fun onScanResult(device: BluetoothDevice)
         fun onConnectionAccepted(device: BluetoothDevice)
         fun onConnectionFailed(device: BluetoothDevice)
         fun onDisconected(device: BluetoothDevice)
         fun onServiceFound()
     }
+
+    interface BleCommunicationListener {
+        fun onMessageReturned(msg: WorkoutCommand)
+    }
+
 
 }

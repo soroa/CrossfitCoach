@@ -19,7 +19,15 @@ import android.hardware.SensorManager
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
+import com.instacart.library.truetime.TrueTime
+import com.instacart.library.truetime.TrueTimeRx
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_record_session.*
+import java.util.concurrent.TimeUnit
 
 
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
@@ -51,6 +59,23 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
             2 -> {
                 val i = Intent(this, BleClientDeviceListActivity::class.java)
                 startActivity(i)
+            }
+            3 -> {
+                TrueTimeRx.build()
+                        .initializeRx("time.google.com")
+                        .subscribeOn(Schedulers.io())
+                        .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}") }) { throwable -> throwable.printStackTrace() }
+
+//                var timer = Observable.interval(0, 2, TimeUnit.SECONDS)
+//                        .subscribe {
+//                            val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+//                            // Vibrate for 500 milliseconds
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+//                            }
+//                        }
+
+
             }
         }
     }

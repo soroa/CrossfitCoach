@@ -33,13 +33,16 @@ public class SensorReading {
     Date timestamp;
     @ColumnInfo(name = "placement")
     int placement;
+    @ColumnInfo(name = "rep_count")
+    int rep;
 
-    public SensorReading(int sensorType, float[] values, long exerciseId, Date timestamp, int placement) {
+    public SensorReading(int sensorType, float[] values, long exerciseId, Date timestamp, int placement, int rep) {
         this.sensorType = sensorType;
         this.values = values;
         this.exerciseId = exerciseId;
         this.timestamp = timestamp;
         this.placement = placement;
+        this.rep = rep;
     }
 
     public int getSensorType() {

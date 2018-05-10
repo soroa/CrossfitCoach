@@ -3,8 +3,10 @@ package com.example.mac.crossfitcoach.screens.record_session
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.persistence.room.Room
+import android.content.Context
 import android.hardware.Sensor
 import android.util.Log
+import android.view.View
 import com.example.mac.crossfitcoach.dbjava.Exercise
 import com.example.mac.crossfitcoach.dbjava.Exercise.*
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
@@ -42,13 +44,13 @@ class RecordExerciseWristViewModel(application: Application) : AndroidViewModel(
                 .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
     }
 
-    fun startRecording(startTime: Date) {
+    fun startRecording(startTime: Date, context:Context) {
         val now = TrueTime.now()
         val difference = startTime.time - now.time
         Completable.timer(difference, TimeUnit.MILLISECONDS)
                 .subscribe {
                     workoutSteps.get(currentStep).startTime = startTime
-                    sensorManager.startSensing()
+                    sensorManager.startSensing(context)
                 }
     }
 

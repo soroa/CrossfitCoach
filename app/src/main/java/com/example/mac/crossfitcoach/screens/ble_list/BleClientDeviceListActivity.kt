@@ -13,7 +13,7 @@ import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
 import kotlinx.android.synthetic.main.activity_ble_devices_list.*
 
-class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientEventListener, BleDevicesRecyclerAdapter.OnBleDeviceClicked {
+class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientConnectionListener, BleDevicesRecyclerAdapter.OnBleDeviceClicked {
 
 
     override fun onServiceFound() {
