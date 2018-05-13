@@ -10,6 +10,7 @@ import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutWristPresenter
 import com.instacart.library.truetime.TrueTime
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -25,11 +26,11 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
         waitingForResponse = false
     }
 
-    override fun onStartStopClicked() {
+    override fun onStartStopClicked(delay:Int) {
         val truth = TrueTime.now()
         val cal = Calendar.getInstance()
         cal.time = truth
-        cal.add(Calendar.SECOND, 1)
+        cal.add(Calendar.SECOND, delay)
 //        startResponseTimer()
         (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_RECORD_BUTTON_CLICK, cal.timeInMillis), this)
         onStartStopCommand(cal.time)
@@ -42,11 +43,13 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
 
     private fun startResponseTimer() {
         waitingForResponse = true
-        Completable.timer(2, TimeUnit.SECONDS).subscribe {
-            if (waitingForResponse) {
-                //error in connection
-//                Toast.makeText(context, "Connection timed out", Toast.LENGTH_SHORT).show()
-            }
-        }
+        Completable.timer(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (waitingForResponse) {
+                        //error in connection
+                        Toast.makeText(context, "Connection timed out", Toast.LENGTH_SHORT).show()
+                    }
+                }
     }
 }

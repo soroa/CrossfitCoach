@@ -15,3 +15,13 @@ fun addTouchEffect(view: View) {
         false
     }
 }
+
+
+fun disableTouch(view: View) {
+    view.setOnTouchListener { v, event -> true }
+}
+
+fun enableTouch(view: View) {
+    view.setOnTouchListener { v, event -> false }
+}
+

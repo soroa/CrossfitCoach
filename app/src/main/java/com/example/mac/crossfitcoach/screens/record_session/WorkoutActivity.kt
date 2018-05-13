@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_record_session.*
 import java.util.concurrent.TimeUnit
 
-abstract class WorkoutActivity : FragmentActivity(), IWorkoutView {
+abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSupport.AmbientCallbackProvider {
 
     private var timer: Disposable? = null
     protected var presenter: IWorkoutPresenter? = null
@@ -105,4 +105,11 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView {
                 }
     }
 
+
+    override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
+        return object : AmbientModeSupport.AmbientCallback() {
+            override fun onEnterAmbient(ambientDetails: Bundle?) {}
+            override fun onExitAmbient() {}
+        }
+    }
 }

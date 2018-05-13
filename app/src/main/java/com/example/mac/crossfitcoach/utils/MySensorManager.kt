@@ -63,7 +63,6 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
         return sensorReadingsLocal
     }
 
-
     fun startSensing(context: Context) {
         sensorReadingsLocal.clear()
         rep = 0
@@ -73,8 +72,6 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
-
-
     }
 
     private var vibrator: Disposable? = null
