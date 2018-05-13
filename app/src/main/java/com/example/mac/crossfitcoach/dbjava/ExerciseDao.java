@@ -13,13 +13,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface ExerciseDao {
 
     @Insert(onConflict = REPLACE)
-    long save(Exercise exercise);
+    long save(DbExercise exercise);
 
     @Insert(onConflict = REPLACE)
-    void saveAll(List<Exercise> exercises);
+    void saveAll(List<DbExercise> exercises);
 
     @Delete
-    void delete(Exercise... exercises);
+    void delete(DbExercise... exercises);
 
     @Query("DELETE FROM exercises")
     void nukeTable();

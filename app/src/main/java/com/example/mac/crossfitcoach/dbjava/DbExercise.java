@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
         parentColumns = "id",
         childColumns = "workout_session_id", onDelete = CASCADE))
 
-public class Exercise {
+public class DbExercise {
     public static final int PUSH_UPS = 1;
     public static final int KETTLE_BELL_SWINGS = 2;
     public static final int PULL_UPS = 3;
@@ -35,7 +35,7 @@ public class Exercise {
     public @interface ExerciseCode {
     }
 
-    public Exercise(Date startTime, Date endTime, int exerciseCode, long sessionId) {
+    public DbExercise(Date startTime, Date endTime, int exerciseCode, long sessionId) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.exerciseCode = exerciseCode;

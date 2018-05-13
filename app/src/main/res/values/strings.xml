@@ -16,5 +16,6 @@
     <string name="wrist">Wrist</string>
     <string name="ankle">Ankle</string>
     <string name="stop">STOP</string>
+    <string name="rec">REC</string>
 
 </resources>

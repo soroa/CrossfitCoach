@@ -47,13 +47,14 @@
         <activity android:name=".screens.ankle_connection.AcceptConnectionActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.log.LogActivity" />
         <activity android:name=".screens.test.TestActivity" />
+        <activity android:name=".screens.record_session.ankle.WorkoutAnkleActivity"
+            android:keepScreenOn="true"/>
+        <activity android:name=".screens.record_session.wrist.WorkoutWristActivity"
+            android:keepScreenOn="true"/>
         <activity android:name=".screens.main.MainMenuActivity" />
         <activity android:name=".screens.ble_list.BleClientDeviceListActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity" />
         <activity android:name=".screens.exercise_list.ExerciseListActivity" />
-        <activity
-            android:name="com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity"
-            android:keepScreenOn="true" />
 
     </application>
 </manifest>

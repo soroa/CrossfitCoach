@@ -23,6 +23,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
+import com.example.mac.crossfitcoach.screens.record_session.WorkoutActivity
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Observable
@@ -39,6 +40,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
         when (index) {
             0 -> {
                 val i = Intent(this, BleClientDeviceListActivity::class.java)
+//                val i = Intent(this, WorkoutActivity::class.java)
                 startActivity(i)
             }
             1 -> {

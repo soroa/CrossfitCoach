@@ -4,16 +4,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
 
 import java.util.Date;
-import java.util.List;
-
-import timber.log.Timber;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "sensor_readings", foreignKeys = @ForeignKey(entity = Exercise.class,
+@Entity(tableName = "sensor_readings", foreignKeys = @ForeignKey(entity = DbExercise.class,
         parentColumns = "id",
         childColumns = "exercise_id", onDelete = CASCADE))
 public class SensorReading {

@@ -10,7 +10,8 @@ import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleServer
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
-import com.example.mac.crossfitcoach.screens.record_session.RecordExerciseActivity
+import com.example.mac.crossfitcoach.screens.record_session.ankle.AnkleWorkoutPresenter
+import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_message.*
@@ -21,7 +22,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         if (msg.equals("Red")) instruction_container.background = getDrawable(R.color.red)
         if (msg.equals("Blue")) instruction_container.background = getDrawable(R.color.blue)
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
-            val i = Intent(this, RecordExerciseActivity::class.java)
+            val i = Intent(this, WorkoutAnkleActivity::class.java)
             startActivity(i)
         }
     }

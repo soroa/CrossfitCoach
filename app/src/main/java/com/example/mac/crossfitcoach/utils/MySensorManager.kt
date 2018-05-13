@@ -9,15 +9,13 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.view.View
 import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.instacart.library.truetime.TrueTime
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventListener {
+class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEventListener {
 
     val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val sensors = mutableListOf<Sensor>()
@@ -51,7 +49,9 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
     }
 
     fun stopSensing() {
-        vibrator!!.dispose()
+        if (SharedPreferencesHelper(context).getSmartWatchPosition() == SensorReading.WRIST) {
+            vibrator?.dispose()
+        }
         sensorManager.unregisterListener(this)
     }
 
@@ -63,20 +63,23 @@ class MySensorManager(context: Context, sensorCodes: Array<Int>) : SensorEventLi
         return sensorReadingsLocal
     }
 
+
     fun startSensing(context: Context) {
         sensorReadingsLocal.clear()
         rep = 0
+        if (SharedPreferencesHelper(context).getSmartWatchPosition() == SensorReading.WRIST) {
+            startVibrations()
+        }
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
-        if (SharedPreferencesHelper(context).getSmartWatchPosition() == SensorReading.WRIST) {
-            startVibrations(context)
-        }
+
+
     }
 
     private var vibrator: Disposable? = null
 
-    private fun startVibrations(context: Context) {
+    private fun startVibrations() {
         vibrator = Observable.interval(0, 2, TimeUnit.SECONDS)
                 .subscribe {
                     rep++
