@@ -1,7 +1,6 @@
 package com.example.mac.crossfitcoach.utils
 
 import android.content.Context
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -20,7 +19,8 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
     val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val sensors = mutableListOf<Sensor>()
     private val sensorReadingsLocal = mutableListOf<SensorReading>()
-    private val sensorPosition: Int = SharedPreferencesHelper(context).getSmartWatchPosition()
+    private val position = SharedPreferencesHelper(context).getSmartWatchPosition()
+
     private var rep = 0
 
     init {
@@ -43,13 +43,13 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
                 //exercise id will be set later
                 , 0
                 , TrueTime.now(),
-                sensorPosition,
+                position,
                 rep
         ))
     }
 
     fun stopSensing() {
-        if (SharedPreferencesHelper(context).getSmartWatchPosition() == SensorReading.WRIST) {
+        if (position == SensorReading.WRIST) {
             vibrator?.dispose()
         }
         sensorManager.unregisterListener(this)
@@ -59,16 +59,14 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
         sensorReadingsLocal.clear()
     }
 
-    fun getReadings(): List<SensorReading> {
+    fun getReadings(): MutableList<SensorReading> {
         return sensorReadingsLocal
     }
 
-    fun startSensing(context: Context) {
+    fun startSensing() {
         sensorReadingsLocal.clear()
         rep = 0
-        if (SharedPreferencesHelper(context).getSmartWatchPosition() == SensorReading.WRIST) {
-            startVibrations()
-        }
+        startRepCounter()
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
@@ -76,16 +74,17 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
 
     private var vibrator: Disposable? = null
 
-    private fun startVibrations() {
+    private fun startRepCounter() {
         vibrator = Observable.interval(0, 2, TimeUnit.SECONDS)
                 .subscribe {
                     rep++
-                    val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    // Vibrate for 500 milliseconds
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+                    if (position == SensorReading.WRIST) {
+                        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                        // Vibrate for 500 milliseconds
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+                        }
                     }
-
                 }
 
     }

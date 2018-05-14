@@ -61,7 +61,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
             current.state = Exercise.State.STOPPED
             view.updateView(current)
         } else if (current.state == Exercise.State.START) {
-            startRecording(time, context)
+            startRecording(time)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         current.state = Exercise.State.RECORDING
@@ -70,16 +70,14 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
         }
     }
 
-    protected fun saveRecordingCommand() {
+    protected fun saveRecordingCommand(repCount: Int) {
         if (currentExerciseIndex == exercises.size - 1) {
             //todo
             return
         }
+        saveRecording(repCount).subscribe()
         currentExerciseIndex += 1
-        if (currentExerciseIndex <= exercises.size - 1) {
-            current = exercises[currentExerciseIndex]
-            saveRecording()
-        }
+        current = exercises[currentExerciseIndex]
         view.updateView(current)
     }
 
@@ -89,13 +87,13 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
         view.updateView(current)
     }
 
-    private fun startRecording(startTime: Date, context: Context): Completable {
+    private fun startRecording(startTime: Date): Completable {
         val now = TrueTime.now()
         val difference = startTime.time - now.time
         return Completable.timer(difference, TimeUnit.MILLISECONDS)
                 .doOnComplete {
                     exercises.get(currentExerciseIndex).startTime = startTime
-                    sensorManager.startSensing(context)
+                    sensorManager.startSensing()
                 }
     }
 
@@ -114,15 +112,14 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
         sensorManager.deleteCachedRecordings()
     }
 
-
-    private fun saveRecording(): Completable {
-        val workoutStep = exercises[currentExerciseIndex]
+    private fun saveRecording(repCount: Int): Completable {
+        val exercise = exercises[currentExerciseIndex]
         return Completable.fromAction {
-            if (exercises.indexOf(workoutStep) == 0) {
+            if (exercises.indexOf(exercise) == 0) {
                 workoutId = db.workoutDao().save(WorkoutSession(TrueTime.now()))
             }
-            setExerciseId(workoutStep)
-            db.sensorReadingsDao().saveAll(workoutStep.readings)
+            setExerciseId(exercise)
+            db.sensorReadingsDao().saveAll(exercise.readings!!.filter { it.rep <= repCount })
         }.subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.newThread())
                 .doOnError { Log.d("Andrea", "error " + it.message) }
@@ -136,6 +133,4 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
             reading.exerciseId = exerciseId
         }
     }
-
-
 }

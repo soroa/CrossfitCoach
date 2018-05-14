@@ -57,6 +57,10 @@ public class SensorReading {
         return timestamp;
     }
 
+    public int getRep() {
+        return rep;
+    }
+
     public void setExerciseId(long exerciseId) {
         this.exerciseId = exerciseId;
     }

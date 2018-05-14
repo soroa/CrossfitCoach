@@ -24,6 +24,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
 import com.example.mac.crossfitcoach.screens.record_session.WorkoutActivity
+import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Observable
@@ -63,20 +64,8 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 startActivity(i)
             }
             3 -> {
-                TrueTimeRx.build()
-                        .initializeRx("time.google.com")
-                        .subscribeOn(Schedulers.io())
-                        .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}") }) { throwable -> throwable.printStackTrace() }
-
-//                var timer = Observable.interval(0, 2, TimeUnit.SECONDS)
-//                        .subscribe {
-//                            val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-//                            // Vibrate for 500 milliseconds
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
-//                            }
-//                        }
-
+                val i: Intent = Intent(this, RepsPickerActivity::class.java)
+                startActivity(i)
 
             }
         }

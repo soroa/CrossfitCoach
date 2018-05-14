@@ -1,5 +1,6 @@
 package com.example.mac.crossfitcoach.screens.record_session.wrist
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
@@ -12,9 +13,11 @@ import java.util.concurrent.TimeUnit
 import android.media.ToneGenerator
 import android.media.AudioManager
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
+import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.example.mac.crossfitcoach.utils.disableTouch
 import com.example.mac.crossfitcoach.utils.enableTouch
 import io.reactivex.android.schedulers.AndroidSchedulers
+import android.app.Activity
 
 
 class WorkoutWristActivity : WorkoutActivity() {
@@ -45,24 +48,31 @@ class WorkoutWristActivity : WorkoutActivity() {
             (getPresenter() as WristWorkoutPresenter).onDiscarRecordingButtonClicked()
         }
         save_recording_btn.setOnClickListener {
-            (getPresenter() as WristWorkoutPresenter).onSaveRecordingClicked()
+            val i = Intent(this, RepsPickerActivity::class.java)
+            startActivityForResult(i, 1)
         }
     }
 
     private lateinit var countdown: Disposable
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                val reps = data!!.getIntExtra("rep_count", 0)
+                (getPresenter() as WristWorkoutPresenter).onSaveRecordingClicked(reps)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 
     private fun startCountdown(onSubscribe: () -> Unit) {
-        var countdownCounter = -5
+        var countdownCounter = -6
         var duration = 100
         val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-        countdown = Observable.interval(1, 1, TimeUnit.SECONDS)
-                .doOnSubscribe {
-                    session_timer_tv.setTextColor(Color.RED)
-                    session_timer_tv.text = countdownCounter.toString()
-                    disableTouch(workout_container)
-                    toneGen1.startTone(ToneGenerator.TONE_DTMF_3, duration)
-                }
-                .subscribeOn(AndroidSchedulers.mainThread())
+        disableTouch(workout_container)
+        countdown = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     onSubscribe()
@@ -72,6 +82,7 @@ class WorkoutWristActivity : WorkoutActivity() {
                 }
                 .doOnNext {
                     countdownCounter++
+                    session_timer_tv.setTextColor(Color.RED)
                     session_timer_tv.text = countdownCounter.toString()
                     if (countdownCounter == 0) {
                         toneGen1.startTone(ToneGenerator.TONE_DTMF_3, 800)

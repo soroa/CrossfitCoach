@@ -7,13 +7,10 @@ import android.util.Log
 import android.view.View
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorReading
-import com.example.mac.crossfitcoach.screens.record_session.ankle.AnkleWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
-import com.example.mac.crossfitcoach.screens.record_session.wrist.WristWorkoutPresenter
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
-import com.example.mac.crossfitcoach.utils.addTouchEffect
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Observable
@@ -32,7 +29,6 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
         AmbientModeSupport.attach(this)
-        val smartWatchPos = SharedPreferencesHelper(this).getSmartWatchPosition()
         presenter = getPresenter()
         updateView(presenter!!.getCurrentExercise())
     }
@@ -85,7 +81,6 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
         }
     }
 
-
     private fun startTimer() {
         var startTime = 0L
         timer = Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -104,7 +99,6 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
                     session_timer_tv.text = formatted
                 }
     }
-
 
     override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
         return object : AmbientModeSupport.AmbientCallback() {

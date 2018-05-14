@@ -13,10 +13,10 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface SensorReadingsDao {
 
-    @Insert(onConflict=REPLACE)
+    @Insert(onConflict = REPLACE)
     void save(SensorReading sensorReading);
 
-    @Insert(onConflict=REPLACE)
+    @Insert(onConflict = REPLACE)
     void saveAll(List<SensorReading> sensorReading);
 
     @Query("SELECT * FROM sensor_readings")

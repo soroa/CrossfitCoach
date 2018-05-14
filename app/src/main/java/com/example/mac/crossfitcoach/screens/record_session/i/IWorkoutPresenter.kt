@@ -8,6 +8,6 @@ open interface IWorkoutPresenter {
 
 interface IWorkoutWristPresenter:IWorkoutPresenter{
     fun onStartStopClicked(countdownDurationMs:Int)
-    fun onSaveRecordingClicked()
+    fun onSaveRecordingClicked(repCount:Int)
     fun onDiscarRecordingButtonClicked()
 }

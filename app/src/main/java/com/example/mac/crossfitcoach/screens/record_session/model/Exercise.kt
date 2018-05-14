@@ -7,8 +7,7 @@ import java.util.*
 class Exercise(var exerciseCode: Int,
                var startTime: Date? = null,
                var endTime: Date? = null,
-               var readings: List<SensorReading>? = null,
-               val avgRepduration: Long = 0,
+               var readings: MutableList<SensorReading>? = null,
                var name: String? = codeToNameExerciseMap[exerciseCode]) {
 
     var state: State = State.START

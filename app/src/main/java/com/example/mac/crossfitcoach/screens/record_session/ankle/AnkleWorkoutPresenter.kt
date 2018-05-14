@@ -35,12 +35,11 @@ class AnkleWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
                 calendar.timeInMillis = workoutCommand.timestamp!!
                 onStartStopCommand(calendar.time)
             }
-            WorkoutCommand.BLE_SAVE_EXERCISE -> saveRecordingCommand()
+            WorkoutCommand.BLE_SAVE_EXERCISE -> saveRecordingCommand(workoutCommand.repCount!!)
             WorkoutCommand.BLE_DISCARD_EXERCISE -> discarRecordingCommand()
         }
     }
 
     override fun onDeviceConnected(dev: BluetoothDevice) {
-
     }
 }

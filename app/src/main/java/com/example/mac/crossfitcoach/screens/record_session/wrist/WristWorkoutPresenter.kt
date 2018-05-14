@@ -15,9 +15,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutPresenter(app, view), IWorkoutWristPresenter, BleClient.BleCommunicationListener {
-    override fun onSaveRecordingClicked() {
-        (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_SAVE_EXERCISE), this)
-        super.saveRecordingCommand()
+    override fun onSaveRecordingClicked(repCount:Int) {
+        (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_SAVE_EXERCISE,repCount = repCount), this)
+        super.saveRecordingCommand(repCount)
     }
 
     private var waitingForResponse: Boolean = false
@@ -31,7 +31,7 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
         val cal = Calendar.getInstance()
         cal.time = truth
         cal.add(Calendar.SECOND, delay)
-//        startResponseTimer()
+        startResponseTimer()
         (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_RECORD_BUTTON_CLICK, cal.timeInMillis), this)
         onStartStopCommand(cal.time)
     }
