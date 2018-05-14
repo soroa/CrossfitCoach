@@ -8,11 +8,15 @@ import android.app.Activity
 import android.content.Intent
 
 class RepsPickerActivity : FragmentActivity() {
+    companion object {
+        val REP_COUNT_EXTRA = "REP_COUNT_EXTRA"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reps_input)
         rep_count_picker.minValue = 1
-        rep_count_picker.maxValue = 100
+        rep_count_picker.maxValue = intent.getIntExtra(REP_COUNT_EXTRA, 100)
         rep_count_picker.value = 5
         ok_btn.setOnClickListener {
             val returnIntent = Intent()

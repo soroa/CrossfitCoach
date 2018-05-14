@@ -25,7 +25,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
     private var scanner: BluetoothLeScanner
     private var mHandler = Handler()
     var connectedDevice: BluetoothDevice? = null
-    var messageCommunicationListener:BleCommunicationListener?=null
+    var messageCommunicationListener: BleCommunicationListener? = null
 
     private var scanning = false
 
@@ -129,6 +129,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
                 mConnected = false
                 Log.d("Andrea", "state disconnected")
                 for (l in listeners) l.onDisconected(gatt!!.device)
+                messageCommunicationListener?.onDisconected(gatt!!.device)
                 disconnectGattServer()
             }
         }
@@ -152,7 +153,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
         }
     }
 
-    fun sendMsg(command: WorkoutCommand, listener:BleCommunicationListener?=null) {
+    fun sendMsg(command: WorkoutCommand, listener: BleCommunicationListener? = null) {
         messageCommunicationListener = listener
         if (!mConnected) {
             return
@@ -180,7 +181,6 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
 
     interface BleCommunicationListener {
         fun onMessageReturned(msg: WorkoutCommand)
+        fun onDisconected(device: BluetoothDevice)
     }
-
-
 }

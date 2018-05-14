@@ -19,13 +19,8 @@ class AnkleWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
     }
 
     override fun onDeviceDisconnected(dev: BluetoothDevice) {
-        val dialogBuilder = WearableDialogHelper.DialogBuilder(context)
-        dialogBuilder.setMessage("Sensor got disconnected")
-                .setPositiveButton("ok", object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-//                        finish()
-                    }
-                })
+        view.connectionStatusChangeed(false)
+
     }
 
     override fun onMessageReceived(workoutCommand: WorkoutCommand) {

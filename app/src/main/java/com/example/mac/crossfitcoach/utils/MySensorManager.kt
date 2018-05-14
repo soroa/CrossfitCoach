@@ -21,7 +21,7 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
     private val sensorReadingsLocal = mutableListOf<SensorReading>()
     private val position = SharedPreferencesHelper(context).getSmartWatchPosition()
 
-    private var rep = 0
+    var rep = 0
 
     init {
         for (sensorCode in sensorCodes) {
@@ -79,13 +79,8 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
                 .subscribe {
                     rep++
                     if (position == SensorReading.WRIST) {
-                        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                        // Vibrate for 500 milliseconds
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
-                        }
+                        vibrate(context, 200)
                     }
                 }
-
     }
 }

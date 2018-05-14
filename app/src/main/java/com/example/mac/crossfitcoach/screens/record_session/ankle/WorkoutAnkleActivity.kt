@@ -8,11 +8,14 @@ import com.example.mac.crossfitcoach.utils.addTouchEffect
 import kotlinx.android.synthetic.main.activity_record_session.*
 
 class WorkoutAnkleActivity : WorkoutActivity() {
+    override fun connectionStatusChangeed(connected: Boolean) {
+        finish()
+    }
 
     override fun getPresenter(): BaseWorkoutPresenter {
         if (presenter == null) {
-        return AnkleWorkoutPresenter(application, this)
-        }else{
+            return AnkleWorkoutPresenter(application, this)
+        } else {
             return presenter as AnkleWorkoutPresenter
         }
     }

@@ -18,6 +18,8 @@ import com.example.mac.crossfitcoach.utils.disableTouch
 import com.example.mac.crossfitcoach.utils.enableTouch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import android.app.Activity
+import android.widget.Toast
+import com.example.mac.crossfitcoach.utils.vibrate
 
 
 class WorkoutWristActivity : WorkoutActivity() {
@@ -49,7 +51,16 @@ class WorkoutWristActivity : WorkoutActivity() {
         }
         save_recording_btn.setOnClickListener {
             val i = Intent(this, RepsPickerActivity::class.java)
+            i.putExtra(RepsPickerActivity.REP_COUNT_EXTRA, (presenter as WristWorkoutPresenter).getMaxRepCountForCurrentExercise())
             startActivityForResult(i, 1)
+        }
+    }
+
+    override fun connectionStatusChangeed(connected: Boolean) {
+        if (!connected) {
+            Toast.makeText(this, "Connection Lost! ", Toast.LENGTH_LONG).show()
+            vibrate(this, 1000)
+            finish()
         }
     }
 
@@ -70,7 +81,8 @@ class WorkoutWristActivity : WorkoutActivity() {
     private fun startCountdown(onSubscribe: () -> Unit) {
         var countdownCounter = -6
         var duration = 100
-        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+        //todo make volume 100
+        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 20)
         disableTouch(workout_container)
         countdown = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,5 +1,9 @@
 package com.example.mac.crossfitcoach.utils
 
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.MotionEvent
 import android.view.View
 
@@ -23,5 +27,12 @@ fun disableTouch(view: View) {
 
 fun enableTouch(view: View) {
     view.setOnTouchListener { v, event -> false }
+}
+
+fun vibrate(context: Context, durationMs: Long) {
+    val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        v.vibrate(VibrationEffect.createOneShot(durationMs, VibrationEffect.DEFAULT_AMPLITUDE))
+    }
 }
 

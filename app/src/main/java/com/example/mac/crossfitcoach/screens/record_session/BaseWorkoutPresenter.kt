@@ -24,7 +24,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
 
     private var db: SensorDatabase = Room.databaseBuilder(context,
             SensorDatabase::class.java, "sensor_readings").build()
-    private var sensorManager: MySensorManager = MySensorManager(context,
+    protected var sensorManager: MySensorManager = MySensorManager(context,
             arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ROTATION_VECTOR))
     private var exercises: Array<Exercise> = arrayOf(
             Exercise(PUSH_UPS),
