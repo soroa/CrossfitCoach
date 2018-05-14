@@ -8,7 +8,7 @@ import com.example.mac.crossfitcoach.screens.record_session.WorkoutActivity
 import com.example.mac.crossfitcoach.utils.addTouchEffect
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_record_session.*
+import kotlinx.android.synthetic.main.activity_workout.*
 import java.util.concurrent.TimeUnit
 import android.media.ToneGenerator
 import android.media.AudioManager

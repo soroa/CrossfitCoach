@@ -2,6 +2,7 @@ package com.example.mac.crossfitcoach.screens.record_session.wrist
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
+import android.util.Log
 import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.communication.ble.BleClient
@@ -36,6 +37,7 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
     private var waitingForResponse: Boolean = false
 
     override fun onMessageReturned(msg: WorkoutCommand) {
+        Log.d("Andrea", "Message returned " + msg.command)
         waitingForResponse = false
     }
 
@@ -56,6 +58,11 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
 
     fun getMaxRepCountForCurrentExercise(): Int {
         return sensorManager.rep
+    }
+
+    override fun onWorkoutInterrupted() {
+        super.onWorkoutInterrupted()
+        (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_END_WORKOUT), this)
     }
 
     private fun startResponseTimer() {

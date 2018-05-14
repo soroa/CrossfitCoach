@@ -28,7 +28,7 @@ import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.activity_record_session.*
+import kotlinx.android.synthetic.main.activity_workout.*
 import java.util.concurrent.TimeUnit
 
 

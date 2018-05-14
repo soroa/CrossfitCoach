@@ -74,7 +74,7 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
 
     private fun startRepCounter(exerciseCode: Int) {
         val period = Exercise.codeToAverageRepTime.get(exerciseCode)
-        vibrator = Observable.interval(0, period!!, TimeUnit.SECONDS)
+        vibrator = Observable.interval(500, period!!*1000, TimeUnit.MILLISECONDS)
                 .subscribe {
                     rep++
                     if (position == SensorReading.WRIST) {

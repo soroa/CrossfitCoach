@@ -115,6 +115,7 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
             if (characteristic?.getUuid()!!.equals(characteristicUUID)) {
                 mGattServer?.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, null)
                 val message = Gson().fromJson(String(value!!), WorkoutCommand::class.java)
+                Log.d("Andrea", "Message received: " + message.command)
                 Completable.fromAction {
                     for (l in listeners) l.onMessageReceived(message)
                 }

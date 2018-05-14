@@ -1,5 +1,6 @@
 package com.example.mac.crossfitcoach.screens.record_session
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
@@ -10,6 +11,7 @@ import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
+import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.instacart.library.truetime.TrueTime
 import com.instacart.library.truetime.TrueTimeRx
@@ -17,7 +19,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_record_session.*
+import kotlinx.android.synthetic.main.activity_workout.*
 import java.util.concurrent.TimeUnit
 
 abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSupport.AmbientCallbackProvider {
@@ -27,7 +29,7 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_record_session)
+        setContentView(R.layout.activity_workout)
         AmbientModeSupport.attach(this)
         presenter = getPresenter()
         updateView(presenter!!.getCurrentExercise())
@@ -40,6 +42,13 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
                 .initializeRx("time.google.com")
                 .subscribeOn(Schedulers.io())
                 .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
+    }
+
+    override fun finishWorkout() {
+        val i = Intent(this, WorkoutDoneActivity::class.java)
+        //todo
+        finish()
+        startActivity(i)
 
     }
 
@@ -81,6 +90,11 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter!!.onWorkoutInterrupted()
+    }
+
     private fun startTimer() {
         var startTime = 0L
         timer = Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -107,8 +121,8 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
         }
     }
 
-    override fun setWorkoutIdText(id: Int) {
-        reps_tv.text = "Worktout id: $id"
+    override fun setWorkoutIdText(id: Long) {
+        workout_id.text = "Worktout id: $id"
 
     }
 }

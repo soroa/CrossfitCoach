@@ -10,10 +10,13 @@ import java.util.Date;
 public class WorkoutSession {
     @PrimaryKey(autoGenerate = true)
     int id;
-    @ColumnInfo(name="start_time")
+    @ColumnInfo(name = "start_time")
     Date startTime;
-    @ColumnInfo(name="end_time")
+    @ColumnInfo(name = "end_time")
     String endTime;
+    @ColumnInfo(name = "completed")
+    boolean completed;
+
 
     public WorkoutSession(Date startTime) {
         this.startTime = startTime;

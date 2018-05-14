@@ -30,7 +30,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_record_session.*
+import kotlinx.android.synthetic.main.activity_workout.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -51,7 +51,7 @@ import java.util.concurrent.TimeUnit
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_record_session)
+//        setContentView(R.layout.activity_workout)
 //        AmbientModeSupport.attach(this)
 //        val args = Bundle()
 //        args.putInt(INT_VALUE, DbExercise.BOX_JUMPS)
