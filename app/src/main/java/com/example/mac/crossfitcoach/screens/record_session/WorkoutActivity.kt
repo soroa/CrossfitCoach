@@ -106,4 +106,9 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
             override fun onExitAmbient() {}
         }
     }
+
+    override fun setWorkoutIdText(id: Int) {
+        reps_tv.text = "Worktout id: $id"
+
+    }
 }

@@ -5,10 +5,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import com.example.mac.crossfitcoach.dbjava.SensorReading
+import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
 import com.instacart.library.truetime.TrueTime
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -63,10 +61,10 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
         return sensorReadingsLocal
     }
 
-    fun startSensing() {
+    fun startSensing(exerciseCode: Int) {
         sensorReadingsLocal.clear()
         rep = 0
-        startRepCounter()
+        startRepCounter(exerciseCode)
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
@@ -74,8 +72,9 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
 
     private var vibrator: Disposable? = null
 
-    private fun startRepCounter() {
-        vibrator = Observable.interval(0, 2, TimeUnit.SECONDS)
+    private fun startRepCounter(exerciseCode: Int) {
+        val period = Exercise.codeToAverageRepTime.get(exerciseCode)
+        vibrator = Observable.interval(0, period!!, TimeUnit.SECONDS)
                 .subscribe {
                     rep++
                     if (position == SensorReading.WRIST) {

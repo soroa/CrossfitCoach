@@ -30,18 +30,18 @@ class Exercise(var exerciseCode: Int,
                 DbExercise.SINGLE_UNDERS to "Crunches",
                 DbExercise.DOUBLE_UNDERS to "Double unders")
 
-        val codeToRepsMap = mapOf(DbExercise.DEAD_LIFT to 5,
-                DbExercise.PUSH_UPS to 5,
-                DbExercise.PULL_UPS to 5,
-                DbExercise.BURPEES to 5,
-                DbExercise.SQUATS to 5,
-                DbExercise.BOX_JUMPS to 5,
-                DbExercise.KETTLE_BELL_SWINGS to 5,
-                DbExercise.DEAD_LIFT to 5,
-                DbExercise.THRUSTERS to 5,
-                DbExercise.CRUNCHES to 5,
-                DbExercise.DOUBLE_UNDERS to 5,
-                DbExercise.SINGLE_UNDERS to 5)
+        val codeToAverageRepTime = mapOf(DbExercise.DEAD_LIFT to 4L,
+                DbExercise.PUSH_UPS to 4L,
+                DbExercise.PULL_UPS to 4L,
+                DbExercise.BURPEES to 4L,
+                DbExercise.SQUATS to 4L,
+                DbExercise.BOX_JUMPS to 4L,
+                DbExercise.KETTLE_BELL_SWINGS to 4L,
+                DbExercise.DEAD_LIFT to 4L,
+                DbExercise.THRUSTERS to 4L,
+                DbExercise.CRUNCHES to 4L,
+                DbExercise.DOUBLE_UNDERS to 4L,
+                DbExercise.SINGLE_UNDERS to 4L)
 
     }
 

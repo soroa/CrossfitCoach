@@ -22,7 +22,6 @@ import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand.Companion.
 import com.example.mac.crossfitcoach.dbjava.DbExercise
 import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise.Companion.codeToNameExerciseMap
-import com.example.mac.crossfitcoach.screens.record_session.model.Exercise.Companion.codeToRepsMap
 import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.*
 import com.instacart.library.truetime.TrueTime

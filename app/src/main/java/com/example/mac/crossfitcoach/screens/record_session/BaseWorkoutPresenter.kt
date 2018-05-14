@@ -93,7 +93,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
         return Completable.timer(difference, TimeUnit.MILLISECONDS)
                 .doOnComplete {
                     exercises.get(currentExerciseIndex).startTime = startTime
-                    sensorManager.startSensing()
+                    sensorManager.startSensing(exercises[currentExerciseIndex].exerciseCode)
                 }
     }
 
