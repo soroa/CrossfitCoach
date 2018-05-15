@@ -18,5 +18,8 @@
     <string name="ankle">Ankle</string>
     <string name="stop">STOP</string>
     <string name="rec">REC</string>
+    <string name="first_name">First Name</string>
+    <string name="ok">OK</string>
+    <string name="last_name">Last Name</string>
 
 </resources>

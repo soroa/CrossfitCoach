@@ -10,6 +10,7 @@ import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleClient
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
 import com.example.mac.crossfitcoach.screens.record_session.wrist.WorkoutWristActivity
 import kotlinx.android.synthetic.main.activity_ble_devices_list.*
 
@@ -17,8 +18,8 @@ class BleClientDeviceListActivity : WearableActivity(), BleClient.BleClientConne
 
 
     override fun onServiceFound() {
-        (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT))
-        val i = Intent(this, WorkoutWristActivity::class.java)
+//        val i = Intent(this, WorkoutWristActivity::class.java)
+        val i = Intent(this, InputNameActivity::class.java)
         startActivity(i)
     }
 

@@ -10,7 +10,7 @@ import com.example.mac.crossfitcoach.screens.record_session.i.IAnkleWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutAnklePresenter
 import java.util.*
 
-class AnkleWorkoutPresenter(val app: Application, view: IAnkleWorkoutView) : BaseWorkoutPresenter(app, view), BleServer.BleServerEventListener, IWorkoutAnklePresenter {
+class AnkleWorkoutPresenter(val app: Application, view: IAnkleWorkoutView, participant:String) : BaseWorkoutPresenter(app, view, participant), BleServer.BleServerEventListener, IWorkoutAnklePresenter {
     override fun onViewDestroyed() {
         (app as MyApplication).bleServer.removeBleEventListener(this)
     }

@@ -17,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutPresenter(app, view), IWorkoutWristPresenter, BleClient.BleCommunicationListener {
+class WristWorkoutPresenter(app: Application, view: IWorkoutView, participant:String) : BaseWorkoutPresenter(app, view, participant), IWorkoutWristPresenter, BleClient.BleCommunicationListener {
 
     override fun onDisconected(device: BluetoothDevice) {
         Completable.fromAction {

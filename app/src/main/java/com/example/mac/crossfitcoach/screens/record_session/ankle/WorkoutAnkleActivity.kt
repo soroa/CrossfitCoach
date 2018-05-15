@@ -25,9 +25,9 @@ class WorkoutAnkleActivity : WorkoutActivity(), IAnkleWorkoutView {
         (presenter as AnkleWorkoutPresenter).onViewDestroyed()
     }
 
-    override fun getPresenter(): BaseWorkoutPresenter {
+    override fun initPresenter(participant:String): BaseWorkoutPresenter {
         if (presenter == null) {
-            return AnkleWorkoutPresenter(application, this)
+            return AnkleWorkoutPresenter(application, this, participant)
         } else {
             return presenter as AnkleWorkoutPresenter
         }

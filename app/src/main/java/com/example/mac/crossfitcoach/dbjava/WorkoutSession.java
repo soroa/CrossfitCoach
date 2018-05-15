@@ -10,6 +10,8 @@ import java.util.Date;
 public class WorkoutSession {
     @PrimaryKey(autoGenerate = true)
     int id;
+    @ColumnInfo(name = "participant")
+    String participant;
     @ColumnInfo(name = "start_time")
     Date startTime;
     @ColumnInfo(name = "end_time")
@@ -18,8 +20,9 @@ public class WorkoutSession {
     boolean completed;
 
 
-    public WorkoutSession(Date startTime) {
+    public WorkoutSession(Date startTime, String participant) {
         this.startTime = startTime;
         this.endTime = endTime;
+        this.participant = participant;
     }
 }

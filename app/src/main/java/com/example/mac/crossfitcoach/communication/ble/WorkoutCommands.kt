@@ -4,7 +4,8 @@ package com.example.mac.crossfitcoach.communication.ble
 data class WorkoutCommand(
         val command: String,
         val timestamp: Long? = null,
-        val repCount: Int? = null
+        val repCount: Int? = null,
+        val participant: String? = null
 ) {
     companion object {
         val BLE_RECORD_BUTTON_CLICK = "BLE_RECORD_BUTTON_CLICK"

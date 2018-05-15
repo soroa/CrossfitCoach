@@ -46,6 +46,7 @@
 
         <activity android:name=".screens.ankle_connection.AcceptConnectionActivity" />
         <activity android:name="com.example.mac.crossfitcoach.screens.log.LogActivity" />
+        <activity android:name=".screens.input_name.InputNameActivity" />
         <activity android:name=".screens.test.TestActivity" />
         <activity android:name=".screens.rep_picker.RepsPickerActivity" />
         <activity android:name=".screens.record_session.ankle.WorkoutAnkleActivity"

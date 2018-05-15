@@ -5,11 +5,13 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Bundle
+import android.support.wear.ambient.AmbientModeSupport
 import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleServer
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity.Companion.PARTICIPANT_NAME
 import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
 import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleActivity
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
@@ -18,15 +20,24 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_message.*
 
 
-class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEventListener {
+class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEventListener, AmbientModeSupport.AmbientCallbackProvider {
     private lateinit var bluetoothServer: BleServer
 
     override fun onMessageReceived(msg: WorkoutCommand) {
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
+            i.putExtra(PARTICIPANT_NAME, msg.participant)
             startActivity(i)
         }
     }
+
+    override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
+        return object : AmbientModeSupport.AmbientCallback() {
+            override fun onEnterAmbient(ambientDetails: Bundle?) {}
+            override fun onExitAmbient() {}
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

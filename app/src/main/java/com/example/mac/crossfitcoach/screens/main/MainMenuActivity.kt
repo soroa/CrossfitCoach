@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
+import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
 import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
@@ -60,7 +61,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 startActivity(i)
             }
             3 -> {
-                val i: Intent = Intent(this, RepsPickerActivity::class.java)
+                val i: Intent = Intent(this, InputNameActivity::class.java)
                 startActivity(i)
 
             }

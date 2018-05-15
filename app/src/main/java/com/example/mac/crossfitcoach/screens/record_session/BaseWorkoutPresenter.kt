@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : IWorkoutPresenter {
+open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, val participant:String) : IWorkoutPresenter {
 
     private var db: SensorDatabase = Room.databaseBuilder(context,
             SensorDatabase::class.java, "sensor_readings").build()
@@ -28,12 +28,12 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
     private var workoutCompleted = false;
     private var exercises: Array<Exercise> = arrayOf(
             Exercise(PUSH_UPS),
-//            Exercise(PULL_UPS),
-//            Exercise(BURPEES),
-//            Exercise(DEAD_LIFT),
-//            Exercise(BOX_JUMPS),
-//            Exercise(SQUATS),
-//            Exercise(CRUNCHES),
+            Exercise(PULL_UPS),
+            Exercise(BURPEES),
+            Exercise(DEAD_LIFT),
+            Exercise(BOX_JUMPS),
+            Exercise(SQUATS),
+            Exercise(CRUNCHES),
             Exercise(KETTLE_BELL_SWINGS))
 
 
@@ -135,7 +135,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
         val exercise = exercises[currentExerciseIndex]
         return Completable.fromAction {
             if (exercises.indexOf(exercise) == 0) {
-                workoutId = db.workoutDao().save(WorkoutSession(TrueTime.now()))
+                workoutId = db.workoutDao().save(WorkoutSession(TrueTime.now(), participant))
                 Completable.fromAction {
                     view.setWorkoutIdText(workoutId!!)
                 }.subscribeOn(AndroidSchedulers.mainThread())

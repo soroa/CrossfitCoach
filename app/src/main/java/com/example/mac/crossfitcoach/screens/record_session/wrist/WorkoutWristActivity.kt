@@ -19,15 +19,17 @@ import com.example.mac.crossfitcoach.utils.enableTouch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import android.app.Activity
 import android.widget.Toast
+import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity.Companion.PARTICIPANT_NAME
 import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.vibrate
 
 
 class WorkoutWristActivity : WorkoutActivity() {
 
-    override fun getPresenter(): BaseWorkoutPresenter {
+
+    override fun initPresenter(participant:String): BaseWorkoutPresenter {
         return if (presenter == null) {
-            WristWorkoutPresenter(application, this)
+            WristWorkoutPresenter(application, this, participant)
         } else {
             presenter as WristWorkoutPresenter
         }
@@ -49,13 +51,13 @@ class WorkoutWristActivity : WorkoutActivity() {
         addTouchEffect(record_btn)
         record_btn.setOnClickListener { view ->
             if (presenter!!.getCurrentExercise().state == Exercise.State.START) {
-                startCountdown({ (getPresenter() as WristWorkoutPresenter).onStartStopClicked(5) })
+                startCountdown({ (presenter as WristWorkoutPresenter).onStartStopClicked(5) })
             } else {
-                (getPresenter() as WristWorkoutPresenter).onStartStopClicked(1)
+                (presenter as WristWorkoutPresenter).onStartStopClicked(1)
             }
         }
         delete_recording_btn.setOnClickListener {
-            (getPresenter() as WristWorkoutPresenter).onDiscarRecordingButtonClicked()
+            (presenter as WristWorkoutPresenter).onDiscarRecordingButtonClicked()
         }
         save_recording_btn.setOnClickListener {
             val i = Intent(this, RepsPickerActivity::class.java)
@@ -78,7 +80,7 @@ class WorkoutWristActivity : WorkoutActivity() {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 val reps = data!!.getIntExtra("rep_count", 0)
-                (getPresenter() as WristWorkoutPresenter).onSaveRecordingClicked(reps)
+                (presenter as WristWorkoutPresenter).onSaveRecordingClicked(reps)
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

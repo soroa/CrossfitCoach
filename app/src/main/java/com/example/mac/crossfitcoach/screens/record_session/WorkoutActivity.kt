@@ -6,6 +6,7 @@ import android.support.wear.ambient.AmbientModeSupport
 import android.view.View
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorReading
+import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
@@ -26,12 +27,13 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
+        val participant  = intent.getStringExtra(InputNameActivity.PARTICIPANT_NAME)
         AmbientModeSupport.attach(this)
-        presenter = getPresenter()
+        presenter = initPresenter(participant)
         updateView(presenter!!.getCurrentExercise())
     }
 
-    abstract fun getPresenter(): BaseWorkoutPresenter
+    abstract fun initPresenter(participant:String): BaseWorkoutPresenter
 
     override fun updateView(exercise: Exercise) {
         when (exercise.state) {
