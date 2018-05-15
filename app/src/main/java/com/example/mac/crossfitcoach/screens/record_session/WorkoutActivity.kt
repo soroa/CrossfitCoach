@@ -3,7 +3,6 @@ package com.example.mac.crossfitcoach.screens.record_session
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
-import android.util.Log
 import android.view.View
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorReading
@@ -12,7 +11,6 @@ import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.instacart.library.truetime.TrueTime
-import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -34,13 +32,6 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
     }
 
     abstract fun getPresenter(): BaseWorkoutPresenter
-
-    init {
-        TrueTimeRx.build()
-                .initializeRx("time.google.com")
-                .subscribeOn(Schedulers.io())
-                .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
-    }
 
     override fun updateView(exercise: Exercise) {
         when (exercise.state) {

@@ -1,23 +1,26 @@
 package com.example.mac.crossfitcoach.screens.ankle_connection
 
 import android.app.Activity
-import android.bluetooth.*
-import android.os.Bundle
-import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.BleServer
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
-import com.example.mac.crossfitcoach.screens.record_session.ankle.AnkleWorkoutPresenter
+import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
 import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleActivity
+import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_message.*
 
 
 class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEventListener {
+    private lateinit var bluetoothServer: BleServer
+
     override fun onMessageReceived(msg: WorkoutCommand) {
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
@@ -25,7 +28,6 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         }
     }
 
-    private lateinit var bluetoothServer: BleServer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
@@ -40,6 +42,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
 
     override fun onResume() {
         super.onResume()
+        checkIfClockIsSynched(this)
         if (!bluetoothServer.isBluetoothOn()) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivity(enableBtIntent)

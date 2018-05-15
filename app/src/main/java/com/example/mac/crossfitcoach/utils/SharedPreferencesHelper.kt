@@ -31,5 +31,16 @@ class SharedPreferencesHelper(private val context: Context) {
         }
     }
 
+    fun isClockSynched(): Boolean {
+        return sharedPrefs.getBoolean(context.getString(R.string.is_clock_synched), false)
+    }
+
+    fun setIsClockSynched(isClockSynched: Boolean) {
+        with(sharedPrefs.edit()) {
+            putBoolean(context.getString(R.string.is_clock_synched), isClockSynched)
+            apply()
+        }
+    }
+
 
 }

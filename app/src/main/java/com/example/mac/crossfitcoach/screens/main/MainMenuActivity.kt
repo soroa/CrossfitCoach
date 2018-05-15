@@ -4,32 +4,25 @@ import android.Manifest
 import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.wear.widget.WearableLinearLayoutManager
 import android.support.wearable.activity.WearableActivity
+import android.util.Log
 import android.widget.Toast
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
+import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
+import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
+import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
+import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import android.hardware.Sensor
-import android.hardware.SensorManager
-import android.support.v4.app.ActivityCompat
-import android.util.Log
-import android.content.pm.PackageManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
-import com.example.mac.crossfitcoach.screens.record_session.WorkoutActivity
-import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
-import com.instacart.library.truetime.TrueTime
-import com.instacart.library.truetime.TrueTimeRx
-import io.reactivex.Observable
-import kotlinx.android.synthetic.main.activity_workout.*
-import java.util.concurrent.TimeUnit
 
 
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
@@ -40,9 +33,12 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onItemListClicked(index: Int) {
         when (index) {
             0 -> {
-                val i = Intent(this, BleClientDeviceListActivity::class.java)
-//                val i = Intent(this, WorkoutActivity::class.java)
-                startActivity(i)
+                if (!SharedPreferencesHelper(this).isClockSynched()) {
+                    checkIfClockIsSynched(this)
+                } else {
+                    val i = Intent(this, BleClientDeviceListActivity::class.java)
+                    startActivity(i)
+                }
             }
             1 -> {
                 val db = Room.databaseBuilder(getApplication(),
@@ -86,8 +82,8 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
             finish()
         } else {
             Toast.makeText(this, "BLE SUPPORTED", Toast.LENGTH_SHORT).show()
-
         }
+        checkIfClockIsSynched(this)
     }
 
     private fun printSensors() {

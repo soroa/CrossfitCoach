@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.example.mac.crossfitcoach.communication.ble.BleClient
 import com.example.mac.crossfitcoach.communication.ble.BleServer
+import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.facebook.stetho.Stetho
 import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.schedulers.Schedulers
@@ -19,6 +20,7 @@ class MyApplication : Application() {
     val bleServer by lazy {
         BleServer(applicationContext)
     }
+
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
@@ -26,6 +28,13 @@ class MyApplication : Application() {
         TrueTimeRx.build()
                 .initializeRx("time.google.com")
                 .subscribeOn(Schedulers.io())
-                .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}") }) { throwable -> throwable.printStackTrace() }
+                .subscribe(
+                        { date ->
+                            Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}")
+                            SharedPreferencesHelper(this).setIsClockSynched(true)
+                        })
+                { throwable ->
+                    throwable.printStackTrace()
+                    SharedPreferencesHelper(this).setIsClockSynched(false)}
     }
 }

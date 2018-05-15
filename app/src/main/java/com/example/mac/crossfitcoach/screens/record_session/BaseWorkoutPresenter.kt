@@ -13,7 +13,6 @@ import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
 import com.example.mac.crossfitcoach.utils.MySensorManager
 import com.instacart.library.truetime.TrueTime
-import com.instacart.library.truetime.TrueTimeRx
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -42,12 +41,6 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
     private var currentExerciseIndex: Int = 0
     protected var workoutId: Long? = -1
 
-    init {
-        TrueTimeRx.build()
-                .initializeRx("time.google.com")
-                .subscribeOn(Schedulers.io())
-                .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
-    }
 
     override fun onWorkoutInterrupted() {
         if (!workoutCompleted) {
