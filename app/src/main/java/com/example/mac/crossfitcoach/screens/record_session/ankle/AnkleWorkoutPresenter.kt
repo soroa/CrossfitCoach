@@ -2,18 +2,18 @@ package com.example.mac.crossfitcoach.screens.record_session.ankle
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
-import android.content.Context
-import android.content.DialogInterface
-import android.support.wearable.view.WearableDialogHelper
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.communication.ble.BleServer
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.i.IAnkleWorkoutView
-import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutView
+import com.example.mac.crossfitcoach.screens.record_session.i.IWorkoutAnklePresenter
 import java.util.*
 
-class AnkleWorkoutPresenter(app: Application, view: IAnkleWorkoutView) : BaseWorkoutPresenter(app, view), BleServer.BleServerEventListener {
+class AnkleWorkoutPresenter(val app: Application, view: IAnkleWorkoutView) : BaseWorkoutPresenter(app, view), BleServer.BleServerEventListener, IWorkoutAnklePresenter {
+    override fun onViewDestroyed() {
+        (app as MyApplication).bleServer.removeBleEventListener(this)
+    }
 
     init {
         (app as MyApplication).bleServer.setBleEventListener(this)

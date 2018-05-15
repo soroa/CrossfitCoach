@@ -51,6 +51,7 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView) : BaseWorkoutP
         onStartStopCommand(cal.time)
     }
 
+
     override fun onDiscarRecordingButtonClicked() {
         (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_DISCARD_EXERCISE), this)
         super.discarRecordingCommand()

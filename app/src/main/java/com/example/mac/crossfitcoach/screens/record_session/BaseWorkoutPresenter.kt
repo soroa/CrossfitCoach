@@ -68,6 +68,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView) : 
                 .subscribe()
     }
 
+
     override fun getCurrentExercise(): Exercise {
         return current
     }

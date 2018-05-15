@@ -19,6 +19,7 @@ import com.example.mac.crossfitcoach.utils.enableTouch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import android.app.Activity
 import android.widget.Toast
+import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.vibrate
 
 
@@ -35,6 +36,13 @@ class WorkoutWristActivity : WorkoutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initButtons()
+    }
+
+    override fun finishWorkout() {
+        val i = Intent(this, WorkoutDoneActivity::class.java)
+        finish()
+        startActivity(i)
+
     }
 
     private fun initButtons() {

@@ -44,13 +44,6 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
                 .subscribe({ date -> Log.v("Andrea", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
     }
 
-    override fun finishWorkout() {
-        val i = Intent(this, WorkoutDoneActivity::class.java)
-        //todo
-        finish()
-        startActivity(i)
-
-    }
 
     override fun updateView(exercise: Exercise) {
         when (exercise.state) {

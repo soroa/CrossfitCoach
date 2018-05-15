@@ -12,3 +12,6 @@ interface IWorkoutWristPresenter:IWorkoutPresenter{
     fun onSaveRecordingClicked(repCount:Int)
     fun onDiscarRecordingButtonClicked()
 }
+interface IWorkoutAnklePresenter:IWorkoutPresenter{
+    fun onViewDestroyed()
+}
