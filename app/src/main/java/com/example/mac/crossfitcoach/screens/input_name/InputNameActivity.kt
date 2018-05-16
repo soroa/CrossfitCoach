@@ -24,6 +24,7 @@ class InputNameActivity : FragmentActivity() {
             (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro"))
             i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
             startActivity(i)
+            finish()
 //            if (name.text.isNotEmpty() ||
 //                    name.text.isNotBlank() ||
 //                    last_name.text.isNotEmpty() ||

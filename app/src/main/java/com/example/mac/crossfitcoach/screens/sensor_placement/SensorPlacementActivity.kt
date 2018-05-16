@@ -43,6 +43,7 @@ class SensorPlacementActivity : WearableActivity() {
         extras.putString(InstructionActivity.INSTRUCTION_TEXT_EXTRA, getString(R.string.put_watch_on_ankle_instruction))
         i.putExtras(extras)
         startActivity(i)
+        finish()
     }
 
     private fun startWrist() {

@@ -65,6 +65,13 @@ class BleServer(val context: Context) : BleEndPoint<BleServer.BleServerEventList
         connectedDevices.clear()
     }
 
+    fun isConnectedToWatch():Boolean{
+        for (d in connectedDevices) {
+            if(d?.name?.contains("HUAWEI")!!) return true
+        }
+        return false
+    }
+
     fun isBluetoothOn(): Boolean {
         return (mBluetoothAdapter.isEnabled)
     }

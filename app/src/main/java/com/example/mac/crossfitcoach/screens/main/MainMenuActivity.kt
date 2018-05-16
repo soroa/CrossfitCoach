@@ -20,6 +20,7 @@ import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
 import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
+import com.example.mac.crossfitcoach.utils.synchClock
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -29,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
 
     private lateinit var emojis: Array<String>
-    private val strings = arrayOf("Start Workout", "Delete Database", "Connect to Ankle Sensor", "Send toc")
+    private val strings = arrayOf("Start Workout", "Delete Database", "Connect to Ankle Sensor", "Synch Clock")
 
     override fun onItemListClicked(index: Int) {
         when (index) {
@@ -61,8 +62,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 startActivity(i)
             }
             3 -> {
-                val i: Intent = Intent(this, InputNameActivity::class.java)
-                startActivity(i)
+                synchClock(this)
 
             }
         }
@@ -73,7 +73,7 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb), getString(R.string.emoji_ankle), getString(R.string.emoji_toc))
+        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb), getString(R.string.emoji_ankle), getString(R.string.emoji_clock))
         setAmbientEnabled()
         initRecyclerView()
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 10)
