@@ -42,7 +42,6 @@ class Exercise(var exerciseCode: Int,
                 DbExercise.CRUNCHES to 4L,
                 DbExercise.DOUBLE_UNDERS to 4L,
                 DbExercise.SINGLE_UNDERS to 4L)
-
     }
 
 }

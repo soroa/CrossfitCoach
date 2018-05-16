@@ -38,10 +38,10 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
+        AmbientModeSupport.attach(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

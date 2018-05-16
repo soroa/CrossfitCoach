@@ -1,11 +1,11 @@
 package com.example.mac.crossfitcoach.screens.instruction
 
 import android.os.Bundle
-import android.support.wearable.activity.WearableActivity
+import android.support.v4.app.FragmentActivity
 import com.example.mac.crossfitcoach.R
 import kotlinx.android.synthetic.main.activity_message.*
 
-abstract class InstructionActivity : WearableActivity() {
+abstract class InstructionActivity : FragmentActivity() {
 
     companion object {
         val INSTRUCTION_TEXT_EXTRA = "INSTRUCTION_TEXT_EXTRA"

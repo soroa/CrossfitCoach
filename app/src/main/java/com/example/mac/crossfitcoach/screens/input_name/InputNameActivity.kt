@@ -20,19 +20,23 @@ class InputNameActivity : FragmentActivity() {
         setContentView(R.layout.activity_input_name)
 
         ok_btn.setOnClickListener {
-            if (name.text.isNotEmpty() ||
-                    name.text.isNotBlank() ||
-                    last_name.text.isNotEmpty() ||
-                    last_name.text.isNotBlank()) {
-
-                val i = Intent(this, WorkoutWristActivity::class.java)
-                val participant = name.text.toString() + " " + last_name.text.toString()
-                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = participant))
-                i.putExtra(PARTICIPANT_NAME, participant)
-                startActivity(i)
-            } else {
-                Toast.makeText(this, "Fill out all fields", Toast.LENGTH_SHORT).show()
-            }
+            val i = Intent(this, WorkoutWristActivity::class.java)
+            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro"))
+            i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
+            startActivity(i)
+//            if (name.text.isNotEmpty() ||
+//                    name.text.isNotBlank() ||
+//                    last_name.text.isNotEmpty() ||
+//                    last_name.text.isNotBlank()) {
+//
+//                val i = Intent(this, WorkoutWristActivity::class.java)
+//                val participant = name.text.toString() + " " + last_name.text.toString()
+//                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = participant))
+//                i.putExtra(PARTICIPANT_NAME, participant)
+//                startActivity(i)
+//            } else {
+//                Toast.makeText(this, "Fill out all fields", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }
