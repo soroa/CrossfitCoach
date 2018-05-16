@@ -49,5 +49,6 @@ class SensorPlacementActivity : WearableActivity() {
     private fun startWrist() {
         val i = Intent(this, MainMenuActivity::class.java)
         startActivity(i)
+        finish()
     }
 }
