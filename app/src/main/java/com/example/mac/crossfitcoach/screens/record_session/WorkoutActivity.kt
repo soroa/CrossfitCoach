@@ -107,6 +107,5 @@ abstract class WorkoutActivity : WearableActivity(), IWorkoutView, AmbientModeSu
 
     override fun setWorkoutIdText(id: Long) {
         workout_id.text = "Worktout id: $id"
-
     }
 }

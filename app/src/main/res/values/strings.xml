@@ -21,5 +21,6 @@
     <string name="first_name">First Name</string>
     <string name="ok">OK</string>
     <string name="last_name">Last Name</string>
+    <string name="reps">Reps</string>
 
 </resources>

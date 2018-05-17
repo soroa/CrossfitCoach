@@ -24,14 +24,14 @@ public class DbExercise {
     public static final int BURPEES = 5;
     public static final int SQUATS = 6;
     public static final int DEAD_LIFT = 7;
-    public static final int THRUSTERS = 8;
-    public static final int DOUBLE_UNDERS = 9;
-    public static final int SINGLE_UNDERS = 10;
+    public static final int KETTLE_BELL_THRUSTERS = 8;
     public static final int CRUNCHES = 11;
+    public static final int MOUTAIN_CLIMBERS = 12;
+    public static final int WALL_BALLS = 12;
 
 
     @Retention(SOURCE)
-    @IntDef({PULL_UPS, PUSH_UPS, KETTLE_BELL_SWINGS, BOX_JUMPS, BURPEES, SQUATS, DEAD_LIFT, THRUSTERS})
+    @IntDef({PULL_UPS, PUSH_UPS, KETTLE_BELL_SWINGS, BOX_JUMPS, BURPEES, SQUATS, DEAD_LIFT, KETTLE_BELL_THRUSTERS})
     public @interface ExerciseCode {
     }
 

@@ -16,6 +16,7 @@ import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity.Companion.PARTICIPANT_NAME
 import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
+import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleActivity
 import com.example.mac.crossfitcoach.utils.addTouchEffect
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
@@ -35,6 +36,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
             vibrate(this,200)
+            BaseWorkoutPresenter.setListOfRepsDurations(msg.repsDurations!!)
             i.putExtra(PARTICIPANT_NAME, msg.participant)
             startActivity(i)
         }

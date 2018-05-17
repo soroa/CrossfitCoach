@@ -16,6 +16,8 @@ import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
+import com.example.mac.crossfitcoach.screens.exercise_list_duration.ExerciseDurationsActivity
+import com.example.mac.crossfitcoach.screens.exercise_list_duration.RepDurationActivity
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
 
     private lateinit var emojis: Array<String>
-    private val strings = arrayOf("Start Workout", "Connect to Ankle Sensor", "Synch Clock", "Delete Database")
+    private val strings = arrayOf("Start Workout", "Connect to Ankle Sensor", "Synch Clock", "Set Reps Duration", "Delete Database")
 
     override fun onItemListClicked(index: Int) {
         when (index) {
@@ -47,6 +49,10 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 }
             }
             3 -> {
+                val i = Intent(this, ExerciseDurationsActivity::class.java)
+                startActivity(i)
+            }
+            4 -> {
                 val db = Room.databaseBuilder(getApplication(),
                         SensorDatabase::class.java, "sensor_readings").build()
                 Completable.fromAction {
@@ -77,11 +83,10 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_ankle), getString(R.string.emoji_clock), getString(R.string.emoji_bomb))
+        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_ankle), getString(R.string.emoji_clock),getString(R.string.emoji_timer), getString(R.string.emoji_bomb))
         setAmbientEnabled()
         initRecyclerView()
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 10)
-
         checkIfClockIsSynched(this)
     }
 

@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.wrist.WorkoutWristActivity
 import kotlinx.android.synthetic.main.activity_input_name.*
 
@@ -21,7 +22,8 @@ class InputNameActivity : FragmentActivity() {
 
         ok_btn.setOnClickListener {
             val i = Intent(this, WorkoutWristActivity::class.java)
-            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro"))
+            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro", repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
+
             i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
             startActivity(i)
             finish()

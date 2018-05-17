@@ -30,15 +30,14 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
                 sensors.add(sensor)
             }
         }
-
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 
-    var counter=0
+    var counter = 0
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
-        if (counter % 150== 0) {
+        if (counter % 150 == 0) {
             Log.d("Andrea", "onSensorChanged")
         }
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
@@ -64,10 +63,10 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
         return sensorReadingsLocal
     }
 
-    fun startSensing(exerciseCode: Int) {
+    fun startSensing(exerciseCode: Int, repDuration: Int) {
         sensorReadingsLocal.clear()
         rep = 0
-        startRepCounter(exerciseCode)
+        startRepCounter(exerciseCode, repDuration)
         for (sensor in sensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
         }
@@ -75,15 +74,12 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
 
     private var vibrator: Disposable? = null
 
-    private fun startRepCounter(exerciseCode: Int) {
-        val period = Exercise.codeToAverageRepTime.get(exerciseCode)
-        vibrator = Observable.interval(500, period!! * 1000, TimeUnit.MILLISECONDS)
+    private fun startRepCounter(exerciseCode: Int, repDuration: Int) {
+        vibrator = Observable.interval(500, repDuration.toLong(), TimeUnit.MILLISECONDS)
                 .subscribe {
                     rep++
                     runOnMainThred { Toast.makeText(context, "Rep", Toast.LENGTH_SHORT).show() }
-//                    if (position == SensorReading.WRIST) {
                     vibrate(context, 400)
-//                    }
                 }
     }
 }
