@@ -13,13 +13,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.UnsupportedEncodingException
 import java.util.concurrent.TimeUnit
 import com.google.gson.Gson
-import java.util.*
 
 
 class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectionListener>() {
 
     private var mGatt: BluetoothGatt? = null
-    var mConnected: Boolean = false
+    var isConnected: Boolean = false
     private var mInitialized: Boolean = false
     private var BLEAdapter: BluetoothAdapter
     private var scanner: BluetoothLeScanner
@@ -69,7 +68,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
     }
 
     fun disconnectGattServer() {
-        mConnected = false
+        isConnected = false
         if (mGatt != null) {
             mGatt?.disconnect()
             mGatt?.close()
@@ -115,7 +114,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
             super.onConnectionStateChange(gatt, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d("Andrea", "connection worked: " + gatt!!.device.name)
-                mConnected = true
+                isConnected = true
                 connectedDevice = gatt.device
                 discoverServices()
                 Completable.fromAction {
@@ -126,7 +125,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
             } else {
                 connectedDevice = null
                 for (l in listeners) l.onConnectionFailed(gatt!!.device)
-                mConnected = false
+                isConnected = false
                 Log.d("Andrea", "state disconnected")
                 for (l in listeners) l.onDisconected(gatt!!.device)
                 messageCommunicationListener?.onDisconected(gatt!!.device)
@@ -155,7 +154,7 @@ class BleClient(val context: Context) : BleEndPoint<BleClient.BleClientConnectio
 
     fun sendMsg(command: WorkoutCommand, listener: BleCommunicationListener? = null) {
         messageCommunicationListener = listener
-        if (!mConnected) {
+        if (!isConnected) {
             return
         }
         val service = mGatt!!.getService(BleServer.uuid)

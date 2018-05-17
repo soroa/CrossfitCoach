@@ -4,7 +4,6 @@ import android.Manifest
 import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
@@ -13,11 +12,11 @@ import android.support.wear.widget.WearableLinearLayoutManager
 import android.support.wearable.activity.WearableActivity
 import android.util.Log
 import android.widget.Toast
+import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.screens.ble_list.BleClientDeviceListActivity
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
-import com.example.mac.crossfitcoach.screens.rep_picker.RepsPickerActivity
 import com.example.mac.crossfitcoach.utils.SharedPreferencesHelper
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
 import com.example.mac.crossfitcoach.utils.synchClock
@@ -30,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemClicked {
 
     private lateinit var emojis: Array<String>
-    private val strings = arrayOf("Start Workout", "Delete Database", "Connect to Ankle Sensor", "Synch Clock")
+    private val strings = arrayOf("Start Workout", "Connect to Ankle Sensor", "Synch Clock", "Delete Database")
 
     override fun onItemListClicked(index: Int) {
         when (index) {
@@ -38,11 +37,16 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 if (!SharedPreferencesHelper(this).isClockSynched()) {
                     checkIfClockIsSynched(this)
                 } else {
-                    val i = Intent(this, BleClientDeviceListActivity::class.java)
-                    startActivity(i)
+                    if ((application as MyApplication).bleClient.isConnected) {
+                        val i = Intent(this, InputNameActivity::class.java)
+                        startActivity(i)
+                    } else {
+                        val i = Intent(this, BleClientDeviceListActivity::class.java)
+                        startActivity(i)
+                    }
                 }
             }
-            1 -> {
+            3 -> {
                 val db = Room.databaseBuilder(getApplication(),
                         SensorDatabase::class.java, "sensor_readings").build()
                 Completable.fromAction {
@@ -57,11 +61,11 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                                 }
                         )
             }
-            2 -> {
+            1 -> {
                 val i = Intent(this, BleClientDeviceListActivity::class.java)
                 startActivity(i)
             }
-            3 -> {
+            2 -> {
                 synchClock(this)
 
             }
@@ -73,17 +77,11 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_bomb), getString(R.string.emoji_ankle), getString(R.string.emoji_clock))
+        emojis = arrayOf(getString(R.string.emoji_workout), getString(R.string.emoji_ankle), getString(R.string.emoji_clock), getString(R.string.emoji_bomb))
         setAmbientEnabled()
         initRecyclerView()
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 10)
 
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, "BLE NOT SUPPORTED", Toast.LENGTH_SHORT).show()
-            finish()
-        } else {
-            Toast.makeText(this, "BLE SUPPORTED", Toast.LENGTH_SHORT).show()
-        }
         checkIfClockIsSynched(this)
     }
 
@@ -104,6 +102,4 @@ class MainMenuActivity : WearableActivity(), StringRecyclerAdapter.OnListItemCli
                 strings, this)
         recycler_view.adapter = stringAdapter
     }
-
-
 }

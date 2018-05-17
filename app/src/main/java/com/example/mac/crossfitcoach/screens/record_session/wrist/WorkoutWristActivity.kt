@@ -92,15 +92,15 @@ class WorkoutWristActivity : WorkoutActivity() {
         var countdownCounter = -6
         var duration = 100
         //todo make volume 100
-        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 20)
-        disableTouch(workout_container)
+        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 10)
+        disableTouch(record_btn)
         countdown = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     onSubscribe()
                 }
                 .doOnDispose {
-                    enableTouch(workout_container)
+                    enableTouch(record_btn)
                 }
                 .doOnNext {
                     countdownCounter++

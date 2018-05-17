@@ -1,9 +1,10 @@
 package com.example.mac.crossfitcoach.screens.record_session
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.wear.ambient.AmbientModeSupport
+import android.support.wearable.activity.WearableActivity
 import android.view.View
+import android.view.WindowManager
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity
@@ -19,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_workout.*
 import java.util.concurrent.TimeUnit
 
-abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSupport.AmbientCallbackProvider {
+abstract class WorkoutActivity : WearableActivity(), IWorkoutView, AmbientModeSupport.AmbientCallbackProvider {
 
     private var timer: Disposable? = null
     protected var presenter: IWorkoutPresenter? = null
@@ -27,13 +28,13 @@ abstract class WorkoutActivity : FragmentActivity(), IWorkoutView, AmbientModeSu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
-        val participant  = intent.getStringExtra(InputNameActivity.PARTICIPANT_NAME)
-        AmbientModeSupport.attach(this)
+        val participant = intent.getStringExtra(InputNameActivity.PARTICIPANT_NAME)
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         presenter = initPresenter(participant)
         updateView(presenter!!.getCurrentExercise())
     }
 
-    abstract fun initPresenter(participant:String): BaseWorkoutPresenter
+    abstract fun initPresenter(participant: String): BaseWorkoutPresenter
 
     override fun updateView(exercise: Exercise) {
         when (exercise.state) {

@@ -39,8 +39,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
 
     private var current: Exercise = exercises[0]
     private var currentExerciseIndex: Int = 0
-    protected var workoutId: Long? = -1
-
+    private var workoutId: Long? = -1
 
     override fun onWorkoutInterrupted() {
         if (!workoutCompleted) {
@@ -71,9 +70,9 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
             stopRecording(time)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
+                        current.state = Exercise.State.STOPPED
+                        view.updateView(current)
                     }
-            current.state = Exercise.State.STOPPED
-            view.updateView(current)
         } else if (current.state == Exercise.State.START) {
             startRecording(time)
                     .observeOn(AndroidSchedulers.mainThread())

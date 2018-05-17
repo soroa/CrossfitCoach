@@ -20,6 +20,7 @@ import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleAc
 import com.example.mac.crossfitcoach.utils.addTouchEffect
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
 import com.example.mac.crossfitcoach.utils.synchClock
+import com.example.mac.crossfitcoach.utils.vibrate
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -33,11 +34,10 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onMessageReceived(msg: WorkoutCommand) {
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
+            vibrate(this,200)
             i.putExtra(PARTICIPANT_NAME, msg.participant)
             startActivity(i)
         }
-
-
     }
 
     override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {

@@ -5,6 +5,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
+import android.widget.Toast
 import com.example.mac.crossfitcoach.dbjava.SensorReading
 import com.example.mac.crossfitcoach.screens.record_session.model.Exercise
 import com.instacart.library.truetime.TrueTime
@@ -34,8 +36,11 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 
+    var counter=0
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
-
+        if (counter % 150== 0) {
+            Log.d("Andrea", "onSensorChanged")
+        }
         sensorReadingsLocal.add(SensorReading(sensorEvent!!.sensor.type
                 , sensorEvent.values.copyOf()
                 //exercise id will be set later
@@ -47,9 +52,7 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
     }
 
     fun stopSensing() {
-        if (position == SensorReading.WRIST) {
-            vibrator?.dispose()
-        }
+        vibrator?.dispose()
         sensorManager.unregisterListener(this)
     }
 
@@ -74,12 +77,13 @@ class MySensorManager(val context: Context, sensorCodes: Array<Int>) : SensorEve
 
     private fun startRepCounter(exerciseCode: Int) {
         val period = Exercise.codeToAverageRepTime.get(exerciseCode)
-        vibrator = Observable.interval(500, period!!*1000, TimeUnit.MILLISECONDS)
+        vibrator = Observable.interval(500, period!! * 1000, TimeUnit.MILLISECONDS)
                 .subscribe {
                     rep++
-                    if (position == SensorReading.WRIST) {
-                        vibrate(context, 200)
-                    }
+                    runOnMainThred { Toast.makeText(context, "Rep", Toast.LENGTH_SHORT).show() }
+//                    if (position == SensorReading.WRIST) {
+                    vibrate(context, 400)
+//                    }
                 }
     }
 }
