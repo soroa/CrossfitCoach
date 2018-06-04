@@ -25,6 +25,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
+        var a = 0
         Timber.plant(Timber.DebugTree())
         if (!TrueTime.isInitialized()) {
             TrueTimeRx.build()
