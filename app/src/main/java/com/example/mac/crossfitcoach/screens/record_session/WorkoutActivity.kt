@@ -29,7 +29,7 @@ abstract class WorkoutActivity : WearableActivity(), IWorkoutView, AmbientModeSu
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
         val participant = intent.getStringExtra(InputNameActivity.PARTICIPANT_NAME)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         presenter = initPresenter(participant)
         updateView(presenter!!.getCurrentExercise())
     }

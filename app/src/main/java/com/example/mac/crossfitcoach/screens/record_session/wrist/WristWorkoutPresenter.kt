@@ -45,7 +45,7 @@ class WristWorkoutPresenter(app: Application, view: IWorkoutView, participant:St
         val truth = TrueTime.now()
         val cal = Calendar.getInstance()
         cal.time = truth
-        cal.add(Calendar.SECOND, delay)
+        cal.add(Calendar.MILLISECOND, delay)
         startResponseTimer()
         (context.applicationContext as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_RECORD_BUTTON_CLICK, cal.timeInMillis), this)
         onStartStopCommand(cal.time)

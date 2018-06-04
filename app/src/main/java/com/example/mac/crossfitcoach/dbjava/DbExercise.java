@@ -18,20 +18,20 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class DbExercise {
     public static final int PUSH_UPS = 1;
-    public static final int KETTLE_BELL_SWINGS = 2;
     public static final int PULL_UPS = 3;
     public static final int BOX_JUMPS = 4;
     public static final int BURPEES = 5;
     public static final int SQUATS = 6;
     public static final int DEAD_LIFT = 7;
-    public static final int KETTLE_BELL_THRUSTERS = 8;
+    public static final int KETTLEBELL_SQUAT_PRESS = 8;
+    public static final int KETTLEBELL_PRESS = 9;
     public static final int CRUNCHES = 11;
-    public static final int MOUTAIN_CLIMBERS = 12;
     public static final int WALL_BALLS = 12;
+    public static final int MOUNTAIN_CLIMBERS = 13;
 
 
     @Retention(SOURCE)
-    @IntDef({PULL_UPS, PUSH_UPS, KETTLE_BELL_SWINGS, BOX_JUMPS, BURPEES, SQUATS, DEAD_LIFT, KETTLE_BELL_THRUSTERS})
+    @IntDef({PULL_UPS, PUSH_UPS, BOX_JUMPS, BURPEES,  SQUATS, DEAD_LIFT, KETTLEBELL_SQUAT_PRESS, MOUNTAIN_CLIMBERS, KETTLEBELL_PRESS, WALL_BALLS})
     public @interface ExerciseCode {
     }
 
@@ -53,6 +53,4 @@ public class DbExercise {
     @ColumnInfo(name = "exercise_code")
     @ExerciseCode
     int exerciseCode;
-
-
 }

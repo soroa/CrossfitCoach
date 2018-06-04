@@ -74,7 +74,6 @@ public class SensorReading {
         String a = "";
         for (float f : values) {
             a = a.concat(String.valueOf(f) + " ");
-
         }
         return a;
     }

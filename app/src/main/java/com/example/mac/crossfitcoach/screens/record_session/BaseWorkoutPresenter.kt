@@ -40,7 +40,10 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
                 Exercise(BOX_JUMPS),
                 Exercise(SQUATS),
                 Exercise(CRUNCHES),
-                Exercise(KETTLE_BELL_SWINGS))
+                Exercise(WALL_BALLS),
+                Exercise(KETTLEBELL_PRESS),
+                Exercise(KETTLEBELL_SQUAT_PRESS)
+        )
 
         fun getListOfRepDurations(): Array<Int> {
             var durations = mutableListOf<Int>()
@@ -55,7 +58,6 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
                 ex.repDurationMs = durations.get(exercises.indexOf(ex))
             }
         }
-
     }
 
 

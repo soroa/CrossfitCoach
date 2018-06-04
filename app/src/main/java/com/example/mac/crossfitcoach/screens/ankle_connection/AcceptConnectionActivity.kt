@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.wear.ambient.AmbientModeSupport
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
@@ -52,7 +53,8 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
-        AmbientModeSupport.attach(this)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         delete_db_button.setOnClickListener {
             val db = Room.databaseBuilder(getApplication(),
                     SensorDatabase::class.java, "sensor_readings").build()
@@ -69,7 +71,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
                     )
         }
         synch_clock.setOnClickListener {
-            synchClock(this)
+            checkIfClockIsSynched(this)
         }
         show_settings.setOnClickListener {
             if (delete_db_button.visibility == View.VISIBLE) {

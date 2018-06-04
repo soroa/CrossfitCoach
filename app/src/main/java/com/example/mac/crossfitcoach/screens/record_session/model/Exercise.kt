@@ -8,7 +8,7 @@ class Exercise(var exerciseCode: Int,
                var startTime: Date? = null,
                var endTime: Date? = null,
                var readings: MutableList<SensorReading>? = null,
-               var repDurationMs:Int=3000,
+               var repDurationMs: Int = 3000,
                var name: String? = codeToNameExerciseMap[exerciseCode]) {
 
     var state: State = State.START
@@ -24,11 +24,11 @@ class Exercise(var exerciseCode: Int,
                 DbExercise.BURPEES to "Burpees",
                 DbExercise.SQUATS to "Squats",
                 DbExercise.BOX_JUMPS to "Box jumps",
-                DbExercise.KETTLE_BELL_SWINGS to "KB Swings",
                 DbExercise.DEAD_LIFT to "KB Dead lifts",
-                DbExercise.KETTLE_BELL_THRUSTERS to "KB Thrusters",
+                DbExercise.KETTLEBELL_PRESS to "KB Presses",
+                DbExercise.KETTLEBELL_SQUAT_PRESS to "KB Squat Press",
                 DbExercise.CRUNCHES to "Crunches",
-                DbExercise.MOUTAIN_CLIMBERS to "Mountain Climbers",
+                DbExercise.MOUNTAIN_CLIMBERS to "Mountain Climbers",
                 DbExercise.WALL_BALLS to "Wall Balls"
         )
     }
