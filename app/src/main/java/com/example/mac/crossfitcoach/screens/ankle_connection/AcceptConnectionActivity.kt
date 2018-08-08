@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.wear.ambient.AmbientModeSupport
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
@@ -16,6 +17,7 @@ import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
 import com.example.mac.crossfitcoach.dbjava.SensorDatabase
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity.Companion.PARTICIPANT_NAME
 import com.example.mac.crossfitcoach.screens.instruction.InstructionActivity
+import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.ankle.WorkoutAnkleActivity
 import com.example.mac.crossfitcoach.utils.addTouchEffect
 import com.example.mac.crossfitcoach.utils.checkIfClockIsSynched
@@ -35,6 +37,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
             vibrate(this,200)
+            BaseWorkoutPresenter.setListOfRepsDurations(msg.repsDurations!!)
             i.putExtra(PARTICIPANT_NAME, msg.participant)
             startActivity(i)
         }
@@ -50,7 +53,8 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
-        AmbientModeSupport.attach(this)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         delete_db_button.setOnClickListener {
             val db = Room.databaseBuilder(getApplication(),
                     SensorDatabase::class.java, "sensor_readings").build()
@@ -67,7 +71,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
                     )
         }
         synch_clock.setOnClickListener {
-            synchClock(this)
+            checkIfClockIsSynched(this)
         }
         show_settings.setOnClickListener {
             if (delete_db_button.visibility == View.VISIBLE) {

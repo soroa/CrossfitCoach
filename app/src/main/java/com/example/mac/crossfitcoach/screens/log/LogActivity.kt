@@ -132,5 +132,4 @@ class LogActivity : WearableActivity(), SensorEventListener {
                     + "Type : " + sensor.type + "\n" + "\n")
         }
     }
-
 }

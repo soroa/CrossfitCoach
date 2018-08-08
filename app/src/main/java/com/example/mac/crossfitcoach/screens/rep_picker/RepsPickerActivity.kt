@@ -6,6 +6,7 @@ import com.example.mac.crossfitcoach.R
 import kotlinx.android.synthetic.main.activity_reps_input.*
 import android.app.Activity
 import android.content.Intent
+import android.view.WindowManager
 
 class RepsPickerActivity : FragmentActivity() {
     companion object {
@@ -15,6 +16,7 @@ class RepsPickerActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reps_input)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         rep_count_picker.minValue = 1
         rep_count_picker.maxValue = intent.getIntExtra(REP_COUNT_EXTRA, 100)
         rep_count_picker.value = 5

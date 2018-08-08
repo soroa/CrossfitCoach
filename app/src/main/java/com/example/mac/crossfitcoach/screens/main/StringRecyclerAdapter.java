@@ -33,7 +33,7 @@ import com.example.mac.crossfitcoach.utils.UtilsKt;
 public class StringRecyclerAdapter extends
         WearableRecyclerView.Adapter<StringRecyclerAdapter.ViewHolder> {
 
-    private static final String TAG = "StringRecyclerAdapter";
+    private static final String TAG = "ExerciseAdapter";
 
     private String[] menuItemsStrings;
     private String[] emojis;

@@ -26,8 +26,7 @@ import com.example.mac.crossfitcoach.utils.vibrate
 
 class WorkoutWristActivity : WorkoutActivity() {
 
-
-    override fun initPresenter(participant:String): BaseWorkoutPresenter {
+    override fun initPresenter(participant: String): BaseWorkoutPresenter {
         return if (presenter == null) {
             WristWorkoutPresenter(application, this, participant)
         } else {
@@ -44,16 +43,15 @@ class WorkoutWristActivity : WorkoutActivity() {
         val i = Intent(this, WorkoutDoneActivity::class.java)
         finish()
         startActivity(i)
-
     }
 
     private fun initButtons() {
         addTouchEffect(record_btn)
         record_btn.setOnClickListener { view ->
             if (presenter!!.getCurrentExercise().state == Exercise.State.START) {
-                startCountdown({ (presenter as WristWorkoutPresenter).onStartStopClicked(5) })
+                startCountdown({ (presenter as WristWorkoutPresenter).onStartStopClicked(5000) })
             } else {
-                (presenter as WristWorkoutPresenter).onStartStopClicked(1)
+                (presenter as WristWorkoutPresenter).onStartStopClicked(500)
             }
         }
         delete_recording_btn.setOnClickListener {
@@ -92,7 +90,7 @@ class WorkoutWristActivity : WorkoutActivity() {
         var countdownCounter = -6
         var duration = 100
         //todo make volume 100
-        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 10)
+        val toneGen1 = ToneGenerator(AudioManager.STREAM_MUSIC, 40)
         disableTouch(record_btn)
         countdown = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,7 +109,6 @@ class WorkoutWristActivity : WorkoutActivity() {
                         countdown.dispose()
                     } else {
                         toneGen1.startTone(ToneGenerator.TONE_DTMF_3, duration)
-                        // Vibrate for 500 milliseconds
                     }
                 }.subscribe()
     }

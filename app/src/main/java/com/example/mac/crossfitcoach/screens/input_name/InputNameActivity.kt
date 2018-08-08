@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.mac.crossfitcoach.MyApplication
 import com.example.mac.crossfitcoach.R
 import com.example.mac.crossfitcoach.communication.ble.WorkoutCommand
+import com.example.mac.crossfitcoach.screens.record_session.BaseWorkoutPresenter
 import com.example.mac.crossfitcoach.screens.record_session.wrist.WorkoutWristActivity
 import kotlinx.android.synthetic.main.activity_input_name.*
 
@@ -20,24 +21,25 @@ class InputNameActivity : FragmentActivity() {
         setContentView(R.layout.activity_input_name)
 
         ok_btn.setOnClickListener {
-            val i = Intent(this, WorkoutWristActivity::class.java)
-            (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro"))
-            i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
-            startActivity(i)
-            finish()
-//            if (name.text.isNotEmpty() ||
-//                    name.text.isNotBlank() ||
-//                    last_name.text.isNotEmpty() ||
-//                    last_name.text.isNotBlank()) {
-//
-//                val i = Intent(this, WorkoutWristActivity::class.java)
-//                val participant = name.text.toString() + " " + last_name.text.toString()
-//                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = participant))
-//                i.putExtra(PARTICIPANT_NAME, participant)
-//                startActivity(i)
-//            } else {
-//                Toast.makeText(this, "Fill out all fields", Toast.LENGTH_SHORT).show()
-//            }
+            if (name.text.isNotEmpty() ||
+                    name.text.isNotBlank() ||
+                    last_name.text.isNotEmpty() ||
+                    last_name.text.isNotBlank()) {
+
+                val i = Intent(this, WorkoutWristActivity::class.java)
+                val participant = name.text.toString() + " " + last_name.text.toString()
+                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = participant, repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
+                i.putExtra(PARTICIPANT_NAME, participant)
+                startActivity(i)
+                finish()
+            } else {
+                val i = Intent(this, WorkoutWristActivity::class.java)
+                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro", repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
+                i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
+                startActivity(i)
+                finish()
+                Toast.makeText(this, "As Andrea Soro", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

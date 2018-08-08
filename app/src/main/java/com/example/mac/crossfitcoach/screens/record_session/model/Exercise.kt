@@ -8,6 +8,7 @@ class Exercise(var exerciseCode: Int,
                var startTime: Date? = null,
                var endTime: Date? = null,
                var readings: MutableList<SensorReading>? = null,
+               var repDurationMs: Int = 3000,
                var name: String? = codeToNameExerciseMap[exerciseCode]) {
 
     var state: State = State.START
@@ -18,31 +19,18 @@ class Exercise(var exerciseCode: Int,
 
     companion object {
         val codeToNameExerciseMap = mapOf(DbExercise.DEAD_LIFT to "Dead Lift",
-                DbExercise.PUSH_UPS to "Push ups",
-                DbExercise.PULL_UPS to "Pull ups",
+                DbExercise.PUSH_UPS to "Pushups",
+                DbExercise.PULL_UPS to "Pullups",
                 DbExercise.BURPEES to "Burpees",
                 DbExercise.SQUATS to "Squats",
                 DbExercise.BOX_JUMPS to "Box jumps",
-                DbExercise.KETTLE_BELL_SWINGS to "Kettle B swings",
-                DbExercise.DEAD_LIFT to "Dead lifts",
-                DbExercise.THRUSTERS to "Thrusters",
+                DbExercise.DEAD_LIFT to "KB Dead lifts",
+                DbExercise.KETTLEBELL_PRESS to "KB Presses",
+                DbExercise.KETTLEBELL_SQUAT_PRESS to "KB Squat Press",
                 DbExercise.CRUNCHES to "Crunches",
-                DbExercise.SINGLE_UNDERS to "Crunches",
-                DbExercise.DOUBLE_UNDERS to "Double unders")
-
-        val codeToAverageRepTime = mapOf(DbExercise.DEAD_LIFT to 4L,
-                DbExercise.PUSH_UPS to 4L,
-                DbExercise.PULL_UPS to 4L,
-                DbExercise.BURPEES to 4L,
-                DbExercise.SQUATS to 4L,
-                DbExercise.BOX_JUMPS to 4L,
-                DbExercise.KETTLE_BELL_SWINGS to 4L,
-                DbExercise.DEAD_LIFT to 4L,
-                DbExercise.THRUSTERS to 4L,
-                DbExercise.CRUNCHES to 4L,
-                DbExercise.DOUBLE_UNDERS to 4L,
-                DbExercise.SINGLE_UNDERS to 4L)
+                DbExercise.MOUNTAIN_CLIMBERS to "Mountain Climbers",
+                DbExercise.WALL_BALLS to "Wall Balls"
+        )
     }
-
 }
 

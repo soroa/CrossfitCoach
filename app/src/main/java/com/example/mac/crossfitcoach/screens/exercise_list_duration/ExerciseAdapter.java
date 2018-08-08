@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.mac.crossfitcoach.screens.exercise_list;
+package com.example.mac.crossfitcoach.screens.exercise_list_duration;
 
 import android.support.v4.app.NotificationCompat;
 import android.support.wear.widget.WearableRecyclerView;
@@ -24,21 +24,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mac.crossfitcoach.R;
+import com.example.mac.crossfitcoach.screens.record_session.model.Exercise;
+import com.example.mac.crossfitcoach.utils.UtilsKt;
 
 /**
  * Provides a binding from {@link NotificationCompat.Style} data set to views displayed within the
  * {@link WearableRecyclerView}.
  */
-public class CustomRecyclerAdapter extends
-        WearableRecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> {
+public class ExerciseAdapter extends
+        WearableRecyclerView.Adapter<ExerciseAdapter.ViewHolder> {
 
-    private static final String TAG = "CustomRecyclerAdapter";
+    private static final String TAG = "ExerciseAdapter";
 
-    private Exercise[] mDataSet;
+    private Exercise[] exerciseList;
+    private final OnListItemClicked listener;
 
-    // Custom ExerciseListViewModel used to instruct main activity to update {@link Notification} and/or
-    // UI for item selected.
-    private ExerciseListViewModel mExerciseListViewModel;
 
     /**
      * Provides reference to the views for each data item. We don't maintain a reference to the
@@ -47,49 +47,55 @@ public class CustomRecyclerAdapter extends
      */
     public static class ViewHolder extends WearableRecyclerView.ViewHolder {
 
-        private final TextView mTextView;
+        final TextView exName;
+        final TextView exDuration;
 
         public ViewHolder(View view) {
             super(view);
-            mTextView =  view.findViewById(R.id.exercise_type_exercise_tv);
+            exName = view.findViewById(R.id.ex_name);
+            exDuration = view.findViewById(R.id.ex_duration);
         }
 
         @Override
-        public String toString() { return (String) mTextView.getText(); }
+        public String toString() {
+            return (String) exName.getText();
+        }
     }
 
-    public CustomRecyclerAdapter(Exercise[] dataSet, ExerciseListViewModel exerciseListViewModel) {
-        mDataSet = dataSet;
-        mExerciseListViewModel = exerciseListViewModel;
+    public ExerciseAdapter(Exercise[] exercises, OnListItemClicked listener) {
+        exerciseList = exercises;
+        this.listener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.view_exercise_type, viewGroup, false);
-
+                .inflate(R.layout.view_exercise_duration, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        // TODO: 20.04.18
-//        viewHolder.mTextView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                mExerciseListViewModel.itemSelected(mDataSet[position]);
-//            }
-//        });
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
-        // Replaces content of view with correct element from data set
-        // TODO: 20.04.18
-        viewHolder.mTextView.setText(mDataSet[position].getName());
+            @Override
+            public void onClick(View view) {
+                listener.onItemListClicked(position);
+            }
+        });
+        viewHolder.exName.setText(exerciseList[position].getName());
+        viewHolder.exDuration.setText(String.valueOf(((float) exerciseList[position].getRepDurationMs()) / 1000) + "s");
+        UtilsKt.addTouchEffect(viewHolder.exName);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return exerciseList.length;
+    }
+
+    public interface OnListItemClicked {
+
+        void onItemListClicked(int index);
     }
 }

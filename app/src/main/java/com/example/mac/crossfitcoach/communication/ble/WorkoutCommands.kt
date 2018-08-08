@@ -5,7 +5,8 @@ data class WorkoutCommand(
         val command: String,
         val timestamp: Long? = null,
         val repCount: Int? = null,
-        val participant: String? = null
+        val participant: String? = null,
+        val repsDurations: Array<Int>?= null
 ) {
     companion object {
         val BLE_RECORD_BUTTON_CLICK = "BLE_RECORD_BUTTON_CLICK"

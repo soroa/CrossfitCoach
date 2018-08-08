@@ -29,7 +29,6 @@ fun addTouchEffect(view: View) {
     }
 }
 
-
 fun disableTouch(view: View) {
     view.setOnTouchListener { v, event -> true }
 }
@@ -47,32 +46,26 @@ fun vibrate(context: Context, durationMs: Long) {
 
 
 fun checkIfClockIsSynched(context: Context) {
-    if (!TrueTime.isInitialized()) {
+    if (!TrueTimeRx.isInitialized()) {
         synchClock(context)
-    }else{
+    } else {
         Toast.makeText(context, "Clock is synched", Toast.LENGTH_LONG).show()
-
     }
 }
 
-
 fun synchClock(context: Context) {
-    if (isNetworkAvailable(context)) {
-        TrueTimeRx.build()
-                .initializeRx("time.google.com")
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        { date ->
-                            Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}")
-                            SharedPreferencesHelper(context).setIsClockSynched(true)
-                            runOnMainThred { Toast.makeText(context, "Clock synched! You may disconnect from internet", Toast.LENGTH_SHORT).show() }
-                        })
-                { throwable ->
-                    runOnMainThred { Toast.makeText(context, "Clock synch failed, check your internet connection", Toast.LENGTH_LONG).show() }
-                }
-    } else {
-        Toast.makeText(context, "Clock synch failed, connect to internet", Toast.LENGTH_LONG).show()
-    }
+    TrueTimeRx.build()
+            .withSharedPreferences(context.applicationContext)
+            .initializeRx("time.google.com")
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                    { date ->
+                        Log.v("Andrea", "TrueTime was initialized and we have a time: ${date.time}")
+                        runOnMainThred { Toast.makeText(context, "Clock synched! You may disconnect from internet", Toast.LENGTH_SHORT).show() }
+                    })
+            { throwable ->
+                runOnMainThred { Toast.makeText(context, "Clock synch failed, check your internet connection", Toast.LENGTH_LONG).show() }
+            }
 }
 
 fun runOnMainThred(foo: () -> Unit) {

@@ -19,33 +19,59 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, val participant:String) : IWorkoutPresenter {
+open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, val participant: String) : IWorkoutPresenter {
 
     private var db: SensorDatabase = Room.databaseBuilder(context,
             SensorDatabase::class.java, "sensor_readings").build()
     protected var sensorManager: MySensorManager = MySensorManager(context,
             arrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_ROTATION_VECTOR))
-    private var workoutCompleted = false;
-    private var exercises: Array<Exercise> = arrayOf(
-            Exercise(PUSH_UPS),
-            Exercise(PULL_UPS),
-            Exercise(BURPEES),
-            Exercise(DEAD_LIFT),
-            Exercise(BOX_JUMPS),
-            Exercise(SQUATS),
-            Exercise(CRUNCHES),
-            Exercise(KETTLE_BELL_SWINGS))
-
+    private var workoutCompleted = false
 
     private var current: Exercise = exercises[0]
     private var currentExerciseIndex: Int = 0
     private var workoutId: Long? = -1
+
+    companion object {
+        var exercises: Array<Exercise> = arrayOf(
+                Exercise(PUSH_UPS),
+                Exercise(PULL_UPS),
+                Exercise(BURPEES),
+                Exercise(DEAD_LIFT),
+                Exercise(BOX_JUMPS),
+                Exercise(SQUATS),
+                Exercise(CRUNCHES),
+                Exercise(WALL_BALLS),
+                Exercise(KETTLEBELL_PRESS),
+                Exercise(KETTLEBELL_SQUAT_PRESS)
+        )
+
+        fun getListOfRepDurations(): Array<Int> {
+            var durations = mutableListOf<Int>()
+            for (ex in exercises) {
+                durations.add(ex.repDurationMs)
+            }
+            return durations.toTypedArray()
+        }
+
+        fun setListOfRepsDurations(durations: Array<Int>) {
+            for (ex in exercises) {
+                ex.repDurationMs = durations.get(exercises.indexOf(ex))
+            }
+        }
+    }
+
 
     override fun onWorkoutInterrupted() {
         if (!workoutCompleted) {
             if (current.state == Exercise.State.RECORDING) {
                 sensorManager.stopSensing()
                 sensorManager.deleteCachedRecordings()
+            }
+            for (ex in exercises) {
+                ex.state = Exercise.State.START
+                ex.startTime = null
+                ex.endTime = null
+                ex.readings = null
             }
             setWorkoutCompleted(false)
         }
@@ -110,7 +136,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
                 .observeOn(Schedulers.newThread())
                 .andThen {
                     exercises[currentExerciseIndex].startTime = startTime
-                    sensorManager.startSensing(exercises[currentExerciseIndex].exerciseCode)
+                    sensorManager.startSensing(exercises[currentExerciseIndex].exerciseCode, exercises[currentExerciseIndex].repDurationMs)
                     it.onComplete()
                 }
     }
