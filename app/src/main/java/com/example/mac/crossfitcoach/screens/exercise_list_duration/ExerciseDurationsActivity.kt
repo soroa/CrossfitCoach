@@ -31,7 +31,7 @@ class ExerciseDurationsActivity : WearableActivity(), ExerciseAdapter.OnListItem
         recycler_view.layoutManager = WearableLinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
         recycler_view.isEdgeItemsCenteringEnabled = true
-        exerciseAdapter = ExerciseAdapter(BaseWorkoutPresenter.exercises, this)
+        exerciseAdapter = ExerciseAdapter(BaseWorkoutPresenter.exercises.toTypedArray(), this)
         recycler_view.adapter = exerciseAdapter
     }
 

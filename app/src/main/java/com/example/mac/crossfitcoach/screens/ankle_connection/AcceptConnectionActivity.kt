@@ -37,6 +37,7 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
         if (msg.command.equals(WorkoutCommand.BLE_START_WORKOUT)) {
             val i = Intent(this, WorkoutAnkleActivity::class.java)
             vibrate(this,200)
+            BaseWorkoutPresenter.setExerciseList(msg.exercises!!)
             BaseWorkoutPresenter.setListOfRepsDurations(msg.repsDurations!!)
             i.putExtra(PARTICIPANT_NAME, msg.participant)
             startActivity(i)
@@ -53,7 +54,6 @@ class AcceptConnectionActivity : InstructionActivity(), BleServer.BleServerEvent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothServer = (application as MyApplication).bleServer
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         delete_db_button.setOnClickListener {
             val db = Room.databaseBuilder(getApplication(),

@@ -6,6 +6,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.IntDef;
 
+import com.example.mac.crossfitcoach.screens.record_session.model.Exercise;
+
 import java.lang.annotation.Retention;
 import java.util.Date;
 
@@ -28,10 +30,12 @@ public class DbExercise {
     public static final int CRUNCHES = 11;
     public static final int WALL_BALLS = 12;
     public static final int MOUNTAIN_CLIMBERS = 13;
+    public static final int SPEED_WORKOUT = 14;
+    public static final int EXECUTION_WORKOUT = 15;
 
 
     @Retention(SOURCE)
-    @IntDef({PULL_UPS, PUSH_UPS, BOX_JUMPS, BURPEES,  SQUATS, DEAD_LIFT, KETTLEBELL_SQUAT_PRESS, MOUNTAIN_CLIMBERS, KETTLEBELL_PRESS, WALL_BALLS})
+    @IntDef({PULL_UPS, PUSH_UPS, BOX_JUMPS, BURPEES, SPEED_WORKOUT, EXECUTION_WORKOUT, SQUATS, DEAD_LIFT, KETTLEBELL_SQUAT_PRESS, MOUNTAIN_CLIMBERS, KETTLEBELL_PRESS, WALL_BALLS})
     public @interface ExerciseCode {
     }
 

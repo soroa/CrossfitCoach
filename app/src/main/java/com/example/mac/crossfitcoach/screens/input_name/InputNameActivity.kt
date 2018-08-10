@@ -28,13 +28,20 @@ class InputNameActivity : FragmentActivity() {
 
                 val i = Intent(this, WorkoutWristActivity::class.java)
                 val participant = name.text.toString() + " " + last_name.text.toString()
-                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = participant, repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
+                (application as MyApplication).bleClient.sendMsg(
+                        WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT,
+                                participant = participant,
+                                exercises = BaseWorkoutPresenter.getExerciseListCodes(),
+                                repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
                 i.putExtra(PARTICIPANT_NAME, participant)
                 startActivity(i)
                 finish()
             } else {
                 val i = Intent(this, WorkoutWristActivity::class.java)
-                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT, participant = "Andrea Soro", repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
+                (application as MyApplication).bleClient.sendMsg(WorkoutCommand(WorkoutCommand.BLE_START_WORKOUT,
+                        participant = "Andrea Soro",
+                        exercises = BaseWorkoutPresenter.getExerciseListCodes(),
+                        repsDurations = BaseWorkoutPresenter.getListOfRepDurations()))
                 i.putExtra(PARTICIPANT_NAME, "Andrea Soro")
                 startActivity(i)
                 finish()

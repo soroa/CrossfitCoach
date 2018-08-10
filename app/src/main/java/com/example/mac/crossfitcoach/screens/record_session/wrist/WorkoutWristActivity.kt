@@ -19,6 +19,8 @@ import com.example.mac.crossfitcoach.utils.enableTouch
 import io.reactivex.android.schedulers.AndroidSchedulers
 import android.app.Activity
 import android.widget.Toast
+import com.example.mac.crossfitcoach.dbjava.DbExercise.EXECUTION_WORKOUT
+import com.example.mac.crossfitcoach.dbjava.DbExercise.SPEED_WORKOUT
 import com.example.mac.crossfitcoach.screens.input_name.InputNameActivity.Companion.PARTICIPANT_NAME
 import com.example.mac.crossfitcoach.screens.workout_done.WorkoutDoneActivity
 import com.example.mac.crossfitcoach.utils.vibrate
@@ -58,9 +60,14 @@ class WorkoutWristActivity : WorkoutActivity() {
             (presenter as WristWorkoutPresenter).onDiscarRecordingButtonClicked()
         }
         save_recording_btn.setOnClickListener {
-            val i = Intent(this, RepsPickerActivity::class.java)
-            i.putExtra(RepsPickerActivity.REP_COUNT_EXTRA, (presenter as WristWorkoutPresenter).getMaxRepCountForCurrentExercise())
-            startActivityForResult(i, 1)
+            if (presenter!!.getCurrentExercise().exerciseCode == SPEED_WORKOUT ||
+                    presenter!!.getCurrentExercise().exerciseCode == EXECUTION_WORKOUT) {
+                    (presenter as WristWorkoutPresenter).onSaveRecordingClicked(3)
+            }else{
+                val i = Intent(this, RepsPickerActivity::class.java)
+                i.putExtra(RepsPickerActivity.REP_COUNT_EXTRA, (presenter as WristWorkoutPresenter).getMaxRepCountForCurrentExercise())
+                startActivityForResult(i, 1)
+            }
         }
     }
 

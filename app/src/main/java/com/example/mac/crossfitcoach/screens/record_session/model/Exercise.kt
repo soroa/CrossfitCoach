@@ -8,9 +8,14 @@ class Exercise(var exerciseCode: Int,
                var startTime: Date? = null,
                var endTime: Date? = null,
                var readings: MutableList<SensorReading>? = null,
-               var repDurationMs: Int = 3000,
+               var repDurationMs: Int = Int.MAX_VALUE,
                var name: String? = codeToNameExerciseMap[exerciseCode]) {
 
+    init {
+        if (exerciseCode == DbExercise.EXECUTION_WORKOUT || exerciseCode == DbExercise.SPEED_WORKOUT) {
+            repDurationMs = Int.MAX_VALUE
+        }
+    }
     var state: State = State.START
 
     enum class State {
@@ -18,7 +23,8 @@ class Exercise(var exerciseCode: Int,
     }
 
     companion object {
-        val codeToNameExerciseMap = mapOf(DbExercise.DEAD_LIFT to "Dead Lift",
+        val codeToNameExerciseMap = mapOf(
+                DbExercise.DEAD_LIFT to "Dead Lift",
                 DbExercise.PUSH_UPS to "Pushups",
                 DbExercise.PULL_UPS to "Pullups",
                 DbExercise.BURPEES to "Burpees",
@@ -29,7 +35,9 @@ class Exercise(var exerciseCode: Int,
                 DbExercise.KETTLEBELL_SQUAT_PRESS to "KB Squat Press",
                 DbExercise.CRUNCHES to "Crunches",
                 DbExercise.MOUNTAIN_CLIMBERS to "Mountain Climbers",
-                DbExercise.WALL_BALLS to "Wall Balls"
+                DbExercise.WALL_BALLS to "Wall Balls",
+                DbExercise.SPEED_WORKOUT to "Speed Workout",
+                DbExercise.EXECUTION_WORKOUT to "Execution Workout"
         )
     }
 }

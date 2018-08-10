@@ -32,7 +32,7 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
     private var workoutId: Long? = -1
 
     companion object {
-        var exercises: Array<Exercise> = arrayOf(
+        var exercises: MutableList<Exercise> = arrayOf(
                 Exercise(PUSH_UPS),
                 Exercise(PULL_UPS),
                 Exercise(BURPEES),
@@ -43,7 +43,23 @@ open class BaseWorkoutPresenter(val context: Context, val view: IWorkoutView, va
                 Exercise(WALL_BALLS),
                 Exercise(KETTLEBELL_PRESS),
                 Exercise(KETTLEBELL_SQUAT_PRESS)
-        )
+        ).toMutableList()
+
+        fun getExerciseListCodes(): Array<Int> {
+            var ex_codes = mutableListOf<Int>()
+            for (ex in exercises) {
+                ex_codes.add(ex.exerciseCode)
+            }
+            return ex_codes.toTypedArray()
+        }
+
+        fun setExerciseList(exCodes: Array<Int>){
+            exercises.clear()
+            for (code in exCodes) {
+                exercises.add(Exercise(code))
+            }
+
+        }
 
         fun getListOfRepDurations(): Array<Int> {
             var durations = mutableListOf<Int>()

@@ -6,6 +6,7 @@ data class WorkoutCommand(
         val timestamp: Long? = null,
         val repCount: Int? = null,
         val participant: String? = null,
+        val exercises: Array<Int>? = null,
         val repsDurations: Array<Int>?= null
 ) {
     companion object {
